@@ -1,0 +1,30 @@
+{
+  "name": "Testimonial",
+  "type": "object",
+  "properties": {
+    "client_name": {
+      "type": "string"
+    },
+    "company_name": {
+      "type": "string"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "default": 5
+    },
+    "review_text": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "client_name",
+    "review_text"
+  ]
+}
