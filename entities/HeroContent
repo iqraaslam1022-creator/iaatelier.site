@@ -1,0 +1,45 @@
+{
+  "name": "HeroContent",
+  "type": "object",
+  "properties": {
+    "video_url": {
+      "type": "string"
+    },
+    "bg_image_url": {
+      "type": "string"
+    },
+    "use_video": {
+      "type": "boolean",
+      "default": true
+    },
+    "heading_line1": {
+      "type": "string"
+    },
+    "heading_line2": {
+      "type": "string"
+    },
+    "heading_line3": {
+      "type": "string"
+    },
+    "subheading": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "cta_primary_text": {
+      "type": "string"
+    },
+    "cta_primary_link": {
+      "type": "string"
+    },
+    "cta_secondary_text": {
+      "type": "string"
+    },
+    "cta_secondary_link": {
+      "type": "string"
+    }
+  },
+  "required": []
+}
