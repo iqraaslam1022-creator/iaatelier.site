@@ -1,0 +1,30 @@
+{
+  "name": "Author",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "social_twitter": {
+      "type": "string"
+    },
+    "social_linkedin": {
+      "type": "string"
+    },
+    "social_instagram": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}
