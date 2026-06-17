@@ -1,0 +1,206 @@
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const SERVICE_OPTIONS = [
+  "Web Design", "Web Development", "Ecommerce Development",
+  "SEO Optimization", "UI/UX Design", "Landing Pages",
+  "Shopify Development", "WordPress Development", "Website Maintenance",
+];
+
+const CONTACT_INFO = [
+  { icon: Phone, title: "Phone", lines: ["0316 4079480", "0312 4494148"] },
+  { icon: Mail, title: "Email", lines: ["iqraaslamiqraaslam30@gmail.com"] },
+  { icon: MapPin, title: "Address", lines: ["112B Jasmine Block, Sector C,", "Bahria Town Lahore"] },
+  { icon: Clock, title: "Response Time", lines: ["< 24 hours", "Average response within one business day"] },
+];
+
+export default function Contact() {
+  const [form, setForm] = useState({ name: "", email: "", service: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const formRef = useRef(null);
+  const infoRef = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".contact-info-item",
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1, x: 0, stagger: 0.12, duration: 0.65, ease: "power2.out",
+          scrollTrigger: { trigger: infoRef.current, start: "top 75%" }
+        }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSending(true);
+    setTimeout(() => {
+      setSending(false);
+      setSent(true);
+      setForm({ name: "", email: "", service: "", message: "" });
+      setTimeout(() => setSent(false), 5000);
+    }, 1600);
+  };
+
+  return (
+    <div style={{ backgroundColor: "#FAFAF8" }}>
+      {/* Hero */}
+      <section className="pt-40 pb-20 px-6 lg:px-10 max-w-7xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+          className="flex items-center gap-3 mb-6"
+        >
+          <div className="gold-line" />
+          <span className="section-label">Get In Touch</span>
+        </motion.div>
+        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
+          className="font-display text-[clamp(2.8rem,6vw,6rem)] leading-[0.94] text-[#1A1A1A] max-w-3xl mb-6"
+        >
+          Start Your <em className="gold-gradient not-italic">Project</em>
+        </motion.h1>
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-lg font-light max-w-lg leading-relaxed text-[#6B6B6B]"
+        >
+          Ready to elevate your digital presence? Let's create something extraordinary together.
+        </motion.p>
+      </section>
+
+      {/* Main Content */}
+      <section className="px-6 lg:px-10 pb-28 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+          {/* Info */}
+          <div ref={infoRef} className="lg:col-span-2 space-y-8">
+            {CONTACT_INFO.map((item, i) => (
+              <div key={item.title} className="contact-info-item flex gap-4" style={{ opacity: 0 }}>
+                <div className="w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0 border border-[#B8972E]/30 bg-[#B8972E]/5">
+                  <item.icon size={16} className="text-[#B8972E]" />
+                </div>
+                <div>
+                  <h4 className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-1.5">{item.title}</h4>
+                  {item.lines.map((line, j) => (
+                    <p key={j} className="text-sm text-[#2D2D2D]">{line}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <div className="contact-info-item" style={{ opacity: 0 }}>
+              <a
+                href="https://wa.me/923164079480"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 lux-card rounded-sm px-6 py-4 hover:border-[#25D366]/40 transition-all group"
+              >
+                <MessageCircle size={18} className="text-[#25D366]" />
+                <span className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#25D366] transition-colors">Chat on WhatsApp</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Form */}
+          <motion.div ref={formRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35 }}
+            className="lg:col-span-3"
+          >
+            <form onSubmit={handleSubmit} className="lux-card rounded-sm p-8 lg:p-10 space-y-6 bg-white">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Your Name</label>
+                  <input type="text" required value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#B0B0A8] focus:border-[#B8972E] focus:outline-none transition-colors"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div>
+                  <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Your Email</label>
+                  <input type="email" required value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#B0B0A8] focus:border-[#B8972E] focus:outline-none transition-colors"
+                    placeholder="john@example.com"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Select Service</label>
+                <select value={form.service}
+                  onChange={(e) => setForm({ ...form, service: e.target.value })}
+                  className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] focus:border-[#B8972E] focus:outline-none transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="">Select a service</option>
+                  {SERVICE_OPTIONS.map((s) => (<option key={s} value={s}>{s}</option>))}
+                </select>
+              </div>
+              <div>
+                <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Project Details</label>
+                <textarea rows={5} value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#B0B0A8] focus:border-[#B8972E] focus:outline-none transition-colors resize-none"
+                  placeholder="Tell me about your project..."
+                />
+              </div>
+              <button type="submit" disabled={sending}
+                className="btn-gold rounded-sm w-full flex items-center justify-center gap-2"
+              >
+                {sending ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : sent ? (
+                  <span>Message Sent ✓</span>
+                ) : (
+                  <><Send size={15} /><span>Send Message</span></>
+                )}
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Map Section */}
+      <section className="px-6 lg:px-10 pb-24 max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="lux-card rounded-sm overflow-hidden"
+        >
+          <div className="bg-[#F5F5F0] h-72 lg:h-96 flex items-center justify-center relative">
+            {/* Map placeholder with location feel */}
+            <div
+              className="absolute inset-0 opacity-30"
+              style={{
+                backgroundImage: "linear-gradient(#D0D0C8 1px,transparent 1px),linear-gradient(90deg,#D0D0C8 1px,transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+            />
+            <div className="relative z-10 text-center">
+              <div className="w-14 h-14 bg-[#B8972E] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <MapPin size={24} className="text-white" />
+              </div>
+              <h3 className="font-display text-2xl text-[#1A1A1A] mb-2">Bahria Town Lahore</h3>
+              <p className="text-[#6B6B6B] text-sm">112B Jasmine Block, Sector C</p>
+              <a
+                href="https://maps.google.com/?q=Bahria+Town+Lahore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-5 text-[0.72rem] tracking-widest uppercase font-semibold text-[#B8972E] hover:text-[#1A1A1A] transition-colors border-b border-[#B8972E]/40 hover:border-[#1A1A1A]/40 pb-0.5"
+              >
+                Open in Maps <ArrowRight size={12} />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+    </div>
+  );
+}
