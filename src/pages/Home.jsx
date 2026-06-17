@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Star, ChevronDown, ChevronUp, Check } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { base44 } from "@/api/base44Client";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,10 +22,194 @@ const DEFAULT_HERO = {
 };
 
 const STATS = [
-  { value: "50+", label: "Projects" },
-  { value: "3+", label: "Years" },
-  { value: "98%", label: "Satisfaction" },
-  { value: "12+", label: "Industries" },
+  { value: "50+", label: "Projects Delivered" },
+  { value: "3+", label: "Years Experience" },
+  { value: "98%", label: "Client Satisfaction" },
+  { value: "12+", label: "Industries Served" },
+];
+
+const STATIC_SERVICES = [
+  { id: 1, num: "01", title: "Web Design", description: "Breathtaking interfaces that captivate and convert visitors into loyal customers." },
+  { id: 2, num: "02", title: "Web Development", description: "High-performance websites built with cutting-edge technology and flawless code." },
+  { id: 3, num: "03", title: "Ecommerce Development", description: "Revenue-driving online stores engineered for maximum conversions and seamless UX." },
+  { id: 4, num: "04", title: "SEO Optimization", description: "Dominate search rankings with data-driven strategies that deliver measurable results." },
+];
+
+const STATIC_PROJECTS = [
+  {
+    id: 1,
+    title: "Luxury Watch Website Design",
+    category: "Web Design",
+    featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f664fe3a7_rolex-herosection.png",
+    live_url: "https://accomplished-apex-time-vault.base44.app/",
+    original_price: 0,
+    discount_percentage: 0,
+  },
+  {
+    id: 2,
+    title: "Hafiz Builders | Premium Construction",
+    category: "UI / UX",
+    featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f1eb8f6d7_real-estate.png",
+    live_url: "https://hafiz-build-elite.base44.app/",
+    original_price: 0,
+    discount_percentage: 0,
+  },
+  {
+    id: 3,
+    title: "Hafiz Cuisine – Restaurant Management",
+    category: "Ecommerce",
+    featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/d2d3978cb_hafiz-cusine.png",
+    live_url: "https://hafiz-luxury-dine.base44.app/",
+    original_price: 0,
+    discount_percentage: 0,
+  },
+];
+
+const STATIC_TESTIMONIALS = [
+  {
+    id: 1,
+    review_text: "Iqra delivered a website that exceeded every expectation. The attention to detail, the animations, the overall experience — it felt like working with a world-class agency.",
+    client_name: "Sarah Mitchell",
+    company_name: "CEO, Luxe Brands Co.",
+    rating: 5,
+    photo_url: "",
+  },
+  {
+    id: 2,
+    review_text: "The portfolio website she built for us generated 3x more client inquiries within the first month. Truly exceptional work.",
+    client_name: "Ahmed Al-Rashid",
+    company_name: "Founder, TechVenture Dubai",
+    rating: 5,
+    photo_url: "",
+  },
+  {
+    id: 3,
+    review_text: "Our new Shopify store is absolutely stunning. Sales increased by 45% in the first quarter. Worth every penny.",
+    client_name: "Emma Thompson",
+    company_name: "Marketing Director, StyleHouse",
+    rating: 5,
+    photo_url: "",
+  },
+  {
+    id: 4,
+    review_text: "Professional, precise, and passionate about her craft. Iqra understood our vision and translated it into a digital masterpiece.",
+    client_name: "Marcus Chen",
+    company_name: "Entrepreneur",
+    rating: 5,
+    photo_url: "",
+  },
+  {
+    id: 5,
+    review_text: "The multilingual website she created works flawlessly in Arabic. RTL support was perfect. Highly recommended.",
+    client_name: "Fatima Al-Zahra",
+    company_name: "Brand Strategist",
+    rating: 5,
+    photo_url: "",
+  },
+];
+
+const STATIC_FAQS = [
+  {
+    id: 1,
+    question: "What is your typical project timeline?",
+    answer: "Most projects are completed within 2–4 weeks depending on complexity. Rush delivery is available upon request.",
+  },
+  {
+    id: 2,
+    question: "Do you offer revisions?",
+    answer: "Yes! All packages include multiple revision rounds to ensure you're completely satisfied with the final result.",
+  },
+  {
+    id: 3,
+    question: "What technologies do you use?",
+    answer: "I work with React, Next.js, Shopify, WordPress, and modern CSS frameworks to build fast, scalable websites.",
+  },
+  {
+    id: 4,
+    question: "Do you provide ongoing maintenance?",
+    answer: "Yes, I offer monthly maintenance packages to keep your website updated, secure, and performing at its best.",
+  },
+  {
+    id: 5,
+    question: "Can you redesign my existing website?",
+    answer: "Absolutely. I specialize in transforming outdated websites into modern, high-converting digital experiences.",
+  },
+];
+
+const STATIC_PACKAGES = [
+  {
+    id: 1,
+    name: "Starter",
+    original_price: 299,
+    discount_price: null,
+    is_featured: false,
+    cta_text: "Get Started",
+    cta_link: "/contact",
+    features: [
+      "3-Page Website",
+      "Mobile Responsive",
+      "Basic SEO Setup",
+      "Contact Form",
+      "1 Revision Round",
+      "5-Day Delivery",
+    ],
+  },
+  {
+    id: 2,
+    name: "Professional",
+    original_price: 699,
+    discount_price: 599,
+    is_featured: false,
+    cta_text: "Get Started",
+    cta_link: "/contact",
+    features: [
+      "Up to 8 Pages",
+      "Mobile Responsive",
+      "Advanced SEO",
+      "CMS Integration",
+      "3 Revision Rounds",
+      "10-Day Delivery",
+      "Analytics Setup",
+    ],
+  },
+  {
+    id: 3,
+    name: "Premium",
+    original_price: 1299,
+    discount_price: 999,
+    is_featured: true,
+    cta_text: "Get Started",
+    cta_link: "/contact",
+    features: [
+      "Up to 15 Pages",
+      "Custom Animations",
+      "Full SEO Package",
+      "E-commerce Ready",
+      "Unlimited Revisions",
+      "14-Day Delivery",
+      "Priority Support",
+      "Performance Optimization",
+    ],
+  },
+  {
+    id: 4,
+    name: "Enterprise",
+    original_price: 2499,
+    discount_price: null,
+    is_featured: false,
+    cta_text: "Contact Us",
+    cta_link: "/contact",
+    features: [
+      "Unlimited Pages",
+      "Full Custom Design",
+      "Advanced Animations",
+      "Multi-language Support",
+      "Dedicated Support",
+      "Custom Integrations",
+      "Monthly Maintenance",
+      "Performance Reports",
+    ],
+  },
 ];
 
 function TestimonialsCarousel({ testimonials }) {
@@ -187,23 +370,15 @@ function PricingSection({ packages }) {
 }
 
 export default function Home() {
-  const [hero, setHero] = useState(DEFAULT_HERO);
-  const [services, setServices] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
-  const [faqs, setFaqs] = useState([]);
-  const [packages, setPackages] = useState([]);
+  const hero = DEFAULT_HERO;
+  const services = STATIC_SERVICES;
+  const projects = STATIC_PROJECTS;
+  const testimonials = STATIC_TESTIMONIALS;
+  const faqs = STATIC_FAQS;
+  const packages = STATIC_PACKAGES;
+
   const servicesRef = useRef(null);
   const statsRef = useRef(null);
-
-  useEffect(() => {
-    base44.entities.HeroContent.list().then((d) => { if (d[0]) setHero(d[0]); });
-    base44.entities.Service.list("order", 4).then(setServices);
-    base44.entities.PortfolioProject.list("order", 3).then(setProjects);
-    base44.entities.Testimonial.list("order").then(setTestimonials);
-    base44.entities.FAQ.list("order").then(setFaqs);
-    base44.entities.PricingPackage.list("order").then(setPackages);
-  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -219,19 +394,20 @@ export default function Home() {
       );
     });
     return () => ctx.revert();
-  }, [services]);
+  }, []);
 
   const LINES = [hero.heading_line1, hero.heading_line2, hero.heading_line3].filter(Boolean);
 
   return (
     <div>
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           {hero.use_video && hero.video_url ? (
-            <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-              <source src={hero.video_url} type="video/mp4" />
-            </video>
+            <video key={hero.video_url} autoPlay loop muted playsInline preload="auto" src={hero.video_url}
+              poster="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2400&q=85"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           ) : hero.bg_image_url ? (
             <img src={hero.bg_image_url} alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
           ) : null}
@@ -292,7 +468,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SERVICES ── */}
+      {/* SERVICES */}
       <section ref={servicesRef} className="py-28 lg:py-36" style={{ backgroundColor: "#FAFAF8" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-20">
@@ -318,7 +494,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PORTFOLIO ── */}
+      {/* PORTFOLIO */}
       <section className="py-28 lg:py-36" style={{ backgroundColor: "#F5F5F0" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-20">
@@ -333,60 +509,38 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {projects.map((proj, i) => {
-              const discountedPrice = proj.discount_percentage > 0
-                ? Math.round(proj.original_price * (1 - proj.discount_percentage / 100))
-                : null;
-              return (
-                <motion.div key={proj.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.7, delay: i * 0.12 }}
-                  className="lux-card rounded-sm overflow-hidden group"
-                >
-                  <div className="relative h-56 overflow-hidden">
-                    <img src={proj.featured_image} alt={proj.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" loading="lazy" />
-                    <div className="absolute inset-0 bg-[#1A1A1A]/0 group-hover:bg-[#1A1A1A]/20 transition-all duration-500" />
-                    <span className="absolute top-4 left-4 text-[0.62rem] tracking-[0.22em] uppercase font-semibold text-[#B8972E] bg-white/90 px-3 py-1.5 rounded-sm">
-                      {proj.category}
-                    </span>
-                    {proj.discount_percentage > 0 && (
-                      <span className="absolute top-4 right-4 bg-[#B8972E] text-white text-[0.6rem] tracking-wider uppercase font-bold px-2 py-1 rounded-sm">
-                        -{proj.discount_percentage}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-6 bg-white">
-                    <h3 className="font-display text-lg text-[#1A1A1A] mb-2 group-hover:text-[#B8972E] transition-colors">{proj.title}</h3>
-                    {proj.original_price > 0 && (
-                      <div className="flex items-center gap-3 mb-3">
-                        {discountedPrice ? (
-                          <>
-                            <span className="text-sm line-through text-[#6B6B6B]">${proj.original_price.toLocaleString()}</span>
-                            <span className="font-display text-lg text-[#B8972E] font-bold">${discountedPrice.toLocaleString()}</span>
-                          </>
-                        ) : (
-                          <span className="font-display text-lg text-[#1A1A1A] font-bold">${proj.original_price.toLocaleString()}</span>
-                        )}
-                      </div>
-                    )}
-                    {proj.live_url && (
-                      <a href={proj.live_url} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-[0.72rem] tracking-widest uppercase font-semibold text-[#1A1A1A] hover:text-[#B8972E] transition-colors border-b border-[#1A1A1A]/20 hover:border-[#B8972E]/50 pb-0.5"
-                      >
-                        <span>Visit Site</span><ExternalLink size={12} />
-                      </a>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
+            {projects.map((proj, i) => (
+              <motion.div key={proj.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: i * 0.12 }}
+                className="lux-card rounded-sm overflow-hidden group"
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <img src={proj.featured_image} alt={proj.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" loading="lazy" />
+                  <div className="absolute inset-0 bg-[#1A1A1A]/0 group-hover:bg-[#1A1A1A]/20 transition-all duration-500" />
+                  <span className="absolute top-4 left-4 text-[0.62rem] tracking-[0.22em] uppercase font-semibold text-[#B8972E] bg-white/90 px-3 py-1.5 rounded-sm">
+                    {proj.category}
+                  </span>
+                </div>
+                <div className="p-6 bg-white">
+                  <h3 className="font-display text-lg text-[#1A1A1A] mb-2 group-hover:text-[#B8972E] transition-colors">{proj.title}</h3>
+                  {proj.live_url && (
+                    <a href={proj.live_url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-[0.72rem] tracking-widest uppercase font-semibold text-[#1A1A1A] hover:text-[#B8972E] transition-colors border-b border-[#1A1A1A]/20 hover:border-[#B8972E]/50 pb-0.5"
+                    >
+                      <span>Visit Site</span><ExternalLink size={12} />
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── STATS ── */}
+      {/* STATS */}
       <section ref={statsRef} className="py-20 bg-[#1A1A1A]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 text-center">
@@ -400,14 +554,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* TESTIMONIALS */}
       <TestimonialsCarousel testimonials={testimonials} />
 
-      {/* ── PRICING ── */}
+      {/* PRICING */}
       <PricingSection packages={packages} />
 
-      {/* ── FAQ ── */}
+      {/* FAQ */}
       <FAQSection faqs={faqs} />
     </div>
   );
 }
+ 
+      
+              
