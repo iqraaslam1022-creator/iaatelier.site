@@ -1,3 +1,29 @@
+ import { Toaster } from "@/components/ui/toaster"
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClientInstance } from '@/lib/query-client'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import PageNotFound from './lib/PageNotFound';
+import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import ScrollToTop from './components/ScrollToTop';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Services from './pages/Services';
+import Portfolio from './pages/Portfolio';
+import About from './pages/About';
+import Blog from './pages/Blog';
+import BlogPostPage from './pages/BlogPost';
+import Contact from './pages/Contact';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminHero from './pages/admin/AdminHero';
+import AdminServices from './pages/admin/AdminServices';
+import AdminPortfolio from './pages/admin/AdminPortfolio';
+import AdminPricing from './pages/admin/AdminPricing';
+import AdminTestimonials from './pages/admin/AdminTestimonials';
+import AdminFAQ from './pages/admin/AdminFAQ';
+import AdminBlog from './pages/admin/AdminBlog';
+import AdminAuthors from './pages/admin/AdminAuthors';
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
@@ -9,7 +35,6 @@ const AuthenticatedApp = () => {
 
   if (isLoadingPublicSettings) return loadingSpinner;
 
-  // Admin routes ke liye auth check
   const isAdminRoute = window.location.pathname.startsWith('/admin');
   if (isAdminRoute) {
     if (isLoadingAuth) return loadingSpinner;
@@ -38,10 +63,4 @@ const AuthenticatedApp = () => {
       <Route path="/admin/pricing" element={<AdminDashboard><AdminPricing /></AdminDashboard>} />
       <Route path="/admin/testimonials" element={<AdminDashboard><AdminTestimonials /></AdminDashboard>} />
       <Route path="/admin/faq" element={<AdminDashboard><AdminFAQ /></AdminDashboard>} />
-      <Route path="/admin/blog" element={<AdminDashboard><AdminBlog /></AdminDashboard>} />
-      <Route path="/admin/authors" element={<AdminDashboard><AdminAuthors /></AdminDashboard>} />
-
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
-  );
-};
+      <Route path="/admin/blog" element={<AdminDashboard><AdminBlog
