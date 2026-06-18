@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Monitor, FolderOpen, Star, HelpCircle, DollarSign, FileText, Users, Settings, ChevronRight, X, Menu, BarChart3 } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { LayoutDashboard, Monitor, FolderOpen, Star, HelpCircle, DollarSign, FileText, Users, Settings, ChevronRight, Menu, BarChart3 } from "lucide-react";
 
 const NAV = [
   { label: "Overview", path: "/admin", icon: BarChart3 },
@@ -55,37 +54,13 @@ function Sidebar({ open, onClose }) {
 
 export default function AdminDashboard({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [stats, setStats] = useState({ services: 0, portfolio: 0, blogs: 0, testimonials: 0, faqs: 0 });
   const location = useLocation();
   const isOverview = location.pathname === "/admin";
-
-  useEffect(() => {
-    if (isOverview) {
-      Promise.all([
-        base44.entities.Service.list(),
-        base44.entities.PortfolioProject.list(),
-        base44.entities.BlogPost.list(),
-        base44.entities.Testimonial.list(),
-        base44.entities.FAQ.list(),
-      ]).then(([s, p, b, t, f]) => {
-        setStats({ services: s.length, portfolio: p.length, blogs: b.length, testimonials: t.length, faqs: f.length });
-      });
-    }
-  }, [isOverview]);
-
-  const STAT_CARDS = [
-    { label: "Services", value: stats.services, icon: Settings, color: "bg-blue-50 text-blue-600", link: "/admin/services" },
-    { label: "Portfolio Projects", value: stats.portfolio, icon: FolderOpen, color: "bg-amber-50 text-amber-600", link: "/admin/portfolio" },
-    { label: "Blog Posts", value: stats.blogs, icon: FileText, color: "bg-green-50 text-green-600", link: "/admin/blog" },
-    { label: "Testimonials", value: stats.testimonials, icon: Star, color: "bg-purple-50 text-purple-600", link: "/admin/testimonials" },
-    { label: "FAQ Items", value: stats.faqs, icon: HelpCircle, color: "bg-rose-50 text-rose-600", link: "/admin/faq" },
-  ];
 
   return (
     <div className="min-h-screen bg-[#F5F5F0] flex">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
-        {/* Top bar */}
         <header className="bg-white border-b border-[#E8E8E4] px-6 py-4 flex items-center justify-between sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-8 h-8 flex items-center justify-center text-[#1A1A1A]">
@@ -104,21 +79,7 @@ export default function AdminDashboard({ children }) {
           {isOverview ? (
             <div>
               <h1 className="font-display text-2xl text-[#1A1A1A] mb-2">Welcome back</h1>
-              <p className="text-[#6B6B6B] text-sm mb-10">Here's an overview of your content.</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-10">
-                {STAT_CARDS.map((s) => {
-                  const Icon = s.icon;
-                  return (
-                    <Link key={s.label} to={s.link} className="bg-white rounded-sm p-6 border border-[#E8E8E4] hover:border-[#B8972E]/40 hover:shadow-md transition-all group">
-                      <div className={`w-10 h-10 rounded-sm flex items-center justify-center mb-4 ${s.color}`}>
-                        <Icon size={18} />
-                      </div>
-                      <div className="font-display text-3xl text-[#1A1A1A] font-bold mb-1">{s.value}</div>
-                      <div className="text-[0.68rem] tracking-widest uppercase text-[#6B6B6B] font-medium">{s.label}</div>
-                    </Link>
-                  );
-                })}
-              </div>
+              <p className="text-[#6B6B6B] text-sm mb-10">Manage your website content from here.</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {NAV.slice(1).map((item) => {
                   const Icon = item.icon;
@@ -144,3 +105,4 @@ export default function AdminDashboard({ children }) {
     </div>
   );
 }
+
