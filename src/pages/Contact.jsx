@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import emailjs from '@emailjs/browser';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,11 +24,13 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", service: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
   const formRef = useRef(null);
   const infoRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
     const ctx = gsap.context(() => {
       gsap.fromTo(".contact-info-item",
         { opacity: 0, x: -30 },
@@ -40,15 +43,45 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    setError(false);
+
+    try {
+      // Admin ko email
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ADMIN,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          service: form.service || "Not specified",
+          message: form.message,
+        }
+      );
+
+      // Client ko confirmation email
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_CLIENT,
+        {
+          to_name: form.name,
+          to_email: form.email,
+          from_email: form.email,
+          service: form.service || "Not specified",
+        }
+      );
+
       setSent(true);
       setForm({ name: "", email: "", service: "", message: "" });
       setTimeout(() => setSent(false), 5000);
-    }, 1600);
+    } catch (err) {
+      console.error("Email error:", err);
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -78,7 +111,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
           {/* Info */}
           <div ref={infoRef} className="lg:col-span-2 space-y-8">
-            {CONTACT_INFO.map((item, i) => (
+            {CONTACT_INFO.map((item) => (
               <div key={item.title} className="contact-info-item flex gap-4" style={{ opacity: 0 }}>
                 <div className="w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0 border border-[#B8972E]/30 bg-[#B8972E]/5">
                   <item.icon size={16} className="text-[#B8972E]" />
@@ -93,7 +126,7 @@ export default function Contact() {
             ))}
 
             <div className="contact-info-item" style={{ opacity: 0 }}>
-              <a
+              
                 href="https://wa.me/923164079480"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -149,6 +182,11 @@ export default function Contact() {
                   placeholder="Tell me about your project..."
                 />
               </div>
+
+              {error && (
+                <p className="text-red-500 text-sm">Message send nahi hua, dobara try karo!</p>
+              )}
+
               <button type="submit" disabled={sending}
                 className="btn-gold rounded-sm w-full flex items-center justify-center gap-2"
               >
@@ -175,7 +213,6 @@ export default function Contact() {
           className="lux-card rounded-sm overflow-hidden"
         >
           <div className="bg-[#F5F5F0] h-72 lg:h-96 flex items-center justify-center relative">
-            {/* Map placeholder with location feel */}
             <div
               className="absolute inset-0 opacity-30"
               style={{
@@ -189,7 +226,7 @@ export default function Contact() {
               </div>
               <h3 className="font-display text-2xl text-[#1A1A1A] mb-2">Bahria Town Lahore</h3>
               <p className="text-[#6B6B6B] text-sm">112B Jasmine Block, Sector C</p>
-              <a
+              
                 href="https://maps.google.com/?q=Bahria+Town+Lahore"
                 target="_blank"
                 rel="noopener noreferrer"
