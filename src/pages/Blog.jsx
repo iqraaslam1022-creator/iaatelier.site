@@ -1,26 +1,95 @@
-import React, { useState, useEffect, useRef } from "react";
+  import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, Tag } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { base44 } from "@/api/base44Client";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const CATEGORIES = ["All", "Web Design", "Development", "SEO", "Ecommerce", "Strategy"];
 
-export default function Blog() {
-  const [posts, setPosts] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [loading, setLoading] = useState(true);
-  const gridRef = useRef(null);
+const STATIC_POSTS = [
+  {
+    id: 1,
+    slug: "why-premium-web-design-matters",
+    title: "Why Premium Web Design Is Your Best Investment in 2024",
+    excerpt: "In a crowded digital marketplace, your website is often the first impression. Here's why investing in premium design pays off exponentially.",
+    category: "Web Design",
+    featured_image: "https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=800&q=80",
+    read_time: "5 min read",
+    published_date: "2024-03-15",
+    published: true,
+    author_name: "Iqra Aslam",
+  },
+  {
+    id: 2,
+    slug: "seo-strategies-2024",
+    title: "10 SEO Strategies That Actually Work in 2024",
+    excerpt: "Search engine optimization has evolved dramatically. These proven strategies will help your website climb the rankings and stay there.",
+    category: "SEO",
+    featured_image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=800&q=80",
+    read_time: "7 min read",
+    published_date: "2024-02-28",
+    published: true,
+    author_name: "Iqra Aslam",
+  },
+  {
+    id: 3,
+    slug: "shopify-vs-woocommerce",
+    title: "Shopify vs WooCommerce: Which Is Right for Your Business?",
+    excerpt: "Choosing the right ecommerce platform is crucial. We break down the pros and cons of both to help you make the best decision.",
+    category: "Ecommerce",
+    featured_image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
+    read_time: "6 min read",
+    published_date: "2024-02-10",
+    published: true,
+    author_name: "Iqra Aslam",
+  },
+  {
+    id: 4,
+    slug: "ux-design-principles",
+    title: "5 UX Design Principles Every Website Must Follow",
+    excerpt: "Great user experience isn't accidental. These five principles are the foundation of websites that delight users and drive conversions.",
+    category: "Web Design",
+    featured_image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=800&q=80",
+    read_time: "4 min read",
+    published_date: "2024-01-25",
+    published: true,
+    author_name: "Iqra Aslam",
+  },
+  {
+    id: 5,
+    slug: "react-vs-wordpress",
+    title: "React vs WordPress: Choosing the Right Technology Stack",
+    excerpt: "The technology behind your website matters more than you think. Here's how to choose between modern React development and WordPress.",
+    category: "Development",
+    featured_image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80",
+    read_time: "8 min read",
+    published_date: "2024-01-10",
+    published: true,
+    author_name: "Iqra Aslam",
+  },
+  {
+    id: 6,
+    slug: "digital-strategy-2024",
+    title: "Building a Winning Digital Strategy for Your Brand",
+    excerpt: "A strong digital presence requires more than just a beautiful website. Learn how to create a comprehensive strategy that drives real results.",
+    category: "Strategy",
+    featured_image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+    read_time: "6 min read",
+    published_date: "2023-12-20",
+    published: true,
+    author_name: "Iqra Aslam",
+  },
+];
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    base44.entities.BlogPost.filter({ published: true }, "-published_date")
-      .then((data) => { setPosts(data); setLoading(false); });
-  }, []);
+export default function Blog() {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const gridRef = useRef(null);
+  const posts = STATIC_POSTS;
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   const filtered = activeCategory === "All" ? posts : posts.filter((p) => p.category === activeCategory);
 
@@ -63,13 +132,7 @@ export default function Blog() {
         </motion.p>
       </section>
 
-      {loading && (
-        <div className="flex justify-center py-20">
-          <div className="w-8 h-8 border-2 border-[#B8972E]/20 border-t-[#B8972E] rounded-full animate-spin" />
-        </div>
-      )}
-
-      {!loading && featuredPost && (
+      {featuredPost && (
         <section className="px-6 lg:px-10 max-w-7xl mx-auto mb-16">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
             className="lux-card rounded-sm overflow-hidden group"
@@ -109,7 +172,7 @@ export default function Blog() {
       </section>
 
       <section ref={gridRef} className="px-6 lg:px-10 pb-28 max-w-7xl mx-auto">
-        {!loading && gridPosts.length === 0 && (
+        {gridPosts.length === 0 && (
           <p className="text-[#6B6B6B] text-center py-12">No posts in this category yet.</p>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -143,3 +206,4 @@ export default function Blog() {
     </div>
   );
 }
+
