@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
@@ -46,7 +46,9 @@ export default function About() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    base44.entities.Author.list().then(setAuthors);
+    base44.entities.Author.list()
+      .then(setAuthors)
+      .catch(() => setAuthors([]));
 
     const ctx = gsap.context(() => {
       gsap.fromTo(".hero-line",
@@ -188,3 +190,6 @@ export default function About() {
     </div>
   );
 }
+        
+  
+      
