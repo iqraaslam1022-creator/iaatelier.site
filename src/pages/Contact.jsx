@@ -132,7 +132,7 @@ export default function Contact() {
               </div>
             ))}
             <div className="contact-info-item" style={{ opacity: 0 }}>
-              
+              <a
                 href="https://wa.me/923164079480"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -256,7 +256,7 @@ export default function Contact() {
               </div>
               <h3 className="font-display text-2xl text-[#1A1A1A] mb-2">Bahria Town Lahore</h3>
               <p className="text-[#6B6B6B] text-sm">112B Jasmine Block, Sector C</p>
-              
+              <a
                 href="https://maps.google.com/?q=Bahria+Town+Lahore"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -270,5 +270,5 @@ export default function Contact() {
       </section>
     </div>
   );
-} 
-        
+}
+
