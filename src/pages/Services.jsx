@@ -1,23 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
+ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Monitor, Code, ShoppingCart, Search, Palette, LayoutDashboard, Store, Globe, Settings, Zap, Star, Heart } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { base44 } from "@/api/base44Client";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ICON_MAP = { Monitor, Code, ShoppingCart, Search, Palette, LayoutDashboard, Store, Globe, Settings, Zap, Star, Heart };
 
+const STATIC_SERVICES = [
+  { id: 1, num: "01", title: "Web Design", icon_name: "Monitor", description: "Breathtaking interfaces that captivate and convert visitors into loyal customers.", deliverables: ["UI Design", "Wireframes", "Prototypes", "Style Guide"] },
+  { id: 2, num: "02", title: "Web Development", icon_name: "Code", description: "High-performance websites built with cutting-edge technology and flawless code.", deliverables: ["React", "Next.js", "Tailwind CSS", "API Integration"] },
+  { id: 3, num: "03", title: "Ecommerce Development", icon_name: "ShoppingCart", description: "Revenue-driving online stores engineered for maximum conversions and seamless UX.", deliverables: ["Shopify", "WooCommerce", "Payment Gateway", "Inventory"] },
+  { id: 4, num: "04", title: "SEO Optimization", icon_name: "Search", description: "Dominate search rankings with data-driven strategies that deliver measurable results.", deliverables: ["Keyword Research", "On-Page SEO", "Technical SEO", "Analytics"] },
+  { id: 5, num: "05", title: "UI/UX Design", icon_name: "Palette", description: "User-centric designs that create intuitive, delightful digital experiences.", deliverables: ["User Research", "Figma Design", "Usability Testing", "Design System"] },
+  { id: 6, num: "06", title: "Landing Pages", icon_name: "LayoutDashboard", description: "High-converting landing pages engineered to turn every visitor into a customer.", deliverables: ["A/B Testing", "CRO", "Copywriting", "Analytics"] },
+  { id: 7, num: "07", title: "Shopify Development", icon_name: "Store", description: "Premium Shopify stores that stand out and drive consistent revenue growth.", deliverables: ["Custom Theme", "App Integration", "Speed Optimization", "SEO"] },
+  { id: 8, num: "08", title: "WordPress Development", icon_name: "Globe", description: "Custom WordPress solutions combining flexibility with enterprise-grade performance.", deliverables: ["Custom Theme", "Plugin Development", "WooCommerce", "Security"] },
+  { id: 9, num: "09", title: "Website Maintenance", icon_name: "Settings", description: "Proactive care and optimization to keep your digital presence at peak performance.", deliverables: ["Updates", "Backups", "Security", "Performance Monitoring"] },
+];
+
 export default function Services() {
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const services = STATIC_SERVICES;
   const cardsRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    base44.entities.Service.list("order").then((data) => { setServices(data); setLoading(false); });
   }, []);
 
   useEffect(() => {
@@ -55,8 +64,6 @@ export default function Services() {
           Every pixel is a deliberate choice. Every interaction, a crafted experience built to elevate your brand.
         </motion.p>
       </section>
-
-      {loading && <div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-[#B8972E]/20 border-t-[#B8972E] rounded-full animate-spin" /></div>}
 
       <section ref={cardsRef} className="px-6 lg:px-10 pb-32">
         <div className="max-w-5xl mx-auto space-y-8">
@@ -108,3 +115,4 @@ export default function Services() {
     </div>
   );
 }
+
