@@ -23,26 +23,23 @@ import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminFAQ from './pages/admin/AdminFAQ';
 import AdminBlog from './pages/admin/AdminBlog';
 import AdminAuthors from './pages/admin/AdminAuthors';
+import { LanguageProvider } from './lib/LanguageContext';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
-
   const loadingSpinner = (
     <div className="fixed inset-0 flex items-center justify-center" style={{ backgroundColor: "#FAFAF8" }}>
       <div className="w-7 h-7 border-2 border-[#B8972E]/20 border-t-[#B8972E] rounded-full animate-spin"></div>
     </div>
   );
-
   if (isLoadingPublicSettings) return loadingSpinner;
-
   const isAdminRoute = location.pathname.startsWith('/admin');
   if (isAdminRoute) {
     if (isLoadingAuth) return loadingSpinner;
     if (authError?.type === 'user_not_registered') return <UserNotRegisteredError />;
     if (authError?.type === 'auth_required') { navigateToLogin(); return null; }
   }
-
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -70,17 +67,18 @@ const AuthenticatedApp = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <ScrollToTop />
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <ScrollToTop />
+            <AuthenticatedApp />
+          </Router>
+          <Toaster />
+        </QueryClientProvider>
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
-
 export default App; 
-
+  
