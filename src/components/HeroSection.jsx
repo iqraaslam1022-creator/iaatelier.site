@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
 
 const STATS = [
   { value: "50+", label: "Projects" },
@@ -20,34 +19,32 @@ export default function HeroSection() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Full-bleed video */}
       <div className="absolute inset-0">
         <video
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: 0 }}
         >
           <source src={heroVideo} type="video/mp4" />
         </video>
-        {/* Overlays: strong dark tint for contrast */}
-        <div className="absolute inset-0 bg-[#0D0D0D]/72" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000]/40 via-transparent to-[#0D0D0D]/60" />
+        <div className="absolute inset-0 bg-[#0D0D0D]/72" style={{ zIndex: 1 }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000]/40 via-transparent to-[#0D0D0D]/60" style={{ zIndex: 1 }} />
       </div>
 
-      {/* Subtle grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
+          zIndex: 2,
           backgroundImage: "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
         }}
       />
 
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full pt-32 pb-24">
-        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -60,7 +57,6 @@ export default function HeroSection() {
           </span>
         </motion.div>
 
-        {/* Headline */}
         <div className="mb-8">
           {LINES.map((line, i) => (
             <div key={i} className="reveal-clip">
@@ -81,7 +77,6 @@ export default function HeroSection() {
           ))}
         </div>
 
-        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -91,7 +86,6 @@ export default function HeroSection() {
           Premium web experiences crafted with precision, passion and purpose — for brands that demand the extraordinary.
         </motion.p>
 
-        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -104,18 +98,8 @@ export default function HeroSection() {
           >
             <span>View My Work</span>
           </button>
-          <button
-            onClick={() => scrollToSection("contact")}
-            className="btn-outline-gold rounded-sm inline-flex items-center gap-2"
-            style={{ borderColor: "rgba(255,255,255,0.5)", color: "white" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "white"; e.currentTarget.style.color = "#1A1A1A"; e.currentTarget.style.borderColor = "white"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "white"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
-          >
-            <span>Start a Project</span>
-          </button>
         </motion.div>
 
-        {/* Stats */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -136,7 +120,6 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <button
         onClick={() => scrollToSection("services")}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group"
@@ -149,4 +132,12 @@ export default function HeroSection() {
       </button>
     </section>
   );
-}
+} 
+ 
+       
+
+        
+
+        
+
+    
