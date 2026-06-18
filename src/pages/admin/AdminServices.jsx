@@ -1,4 +1,4 @@
- import React, { useState } from "react";
+import React, { useState } from "react";
 import { Plus, Pencil, Trash2, Save, X, GripVertical, Monitor, Code, ShoppingCart, Search, Palette, LayoutDashboard, Store, Globe, Settings, Zap, Star, Heart } from "lucide-react";
 
 const ICON_OPTIONS = ["Monitor", "Code", "ShoppingCart", "Search", "Palette", "LayoutDashboard", "Store", "Globe", "Settings", "Zap", "Star", "Heart"];
@@ -133,7 +133,5 @@ export default function AdminServices() {
         ))}
       </div>
     </div>
-  );
+  ); 
 }
-
-     
