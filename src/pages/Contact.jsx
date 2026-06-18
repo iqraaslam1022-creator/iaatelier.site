@@ -1,4 +1,4 @@
- import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight } from "lucide-react";
 import gsap from "gsap";
@@ -29,7 +29,7 @@ export default function Contact() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+    emailjs.init("AspbT2NRr1vswgaTv");
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".contact-info-item",
@@ -53,8 +53,8 @@ export default function Contact() {
     setError(false);
     try {
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ADMIN,
+        "service_n5slkj3",
+        "template_2p7v7ep",
         {
           from_name: form.name,
           from_email: form.email,
@@ -63,8 +63,8 @@ export default function Contact() {
         }
       );
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_CLIENT,
+        "service_n5slkj3",
+        "template_t57yods",
         {
           to_name: form.name,
           to_email: form.email,
@@ -132,7 +132,7 @@ export default function Contact() {
               </div>
             ))}
             <div className="contact-info-item" style={{ opacity: 0 }}>
-              <a
+              
                 href="https://wa.me/923164079480"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -256,7 +256,7 @@ export default function Contact() {
               </div>
               <h3 className="font-display text-2xl text-[#1A1A1A] mb-2">Bahria Town Lahore</h3>
               <p className="text-[#6B6B6B] text-sm">112B Jasmine Block, Sector C</p>
-              <a
+              
                 href="https://maps.google.com/?q=Bahria+Town+Lahore"
                 target="_blank"
                 rel="noopener noreferrer"
