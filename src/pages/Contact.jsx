@@ -25,7 +25,6 @@ export default function Contact() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
-  const formRef = useRef(null);
   const infoRef = useRef(null);
 
   useEffect(() => {
@@ -47,9 +46,7 @@ export default function Contact() {
     e.preventDefault();
     setSending(true);
     setError(false);
-
     try {
-      // Admin ko email
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ADMIN,
@@ -60,8 +57,6 @@ export default function Contact() {
           message: form.message,
         }
       );
-
-      // Client ko confirmation email
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_CLIENT,
@@ -72,7 +67,6 @@ export default function Contact() {
           service: form.service || "Not specified",
         }
       );
-
       setSent(true);
       setForm({ name: "", email: "", service: "", message: "" });
       setTimeout(() => setSent(false), 5000);
@@ -86,30 +80,36 @@ export default function Contact() {
 
   return (
     <div style={{ backgroundColor: "#FAFAF8" }}>
-      {/* Hero */}
       <section className="pt-40 pb-20 px-6 lg:px-10 max-w-7xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
           className="flex items-center gap-3 mb-6"
         >
           <div className="gold-line" />
           <span className="section-label">Get In Touch</span>
         </motion.div>
-        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display text-[clamp(2.8rem,6vw,6rem)] leading-[0.94] text-[#1A1A1A] max-w-3xl mb-6"
         >
           Start Your <em className="gold-gradient not-italic">Project</em>
         </motion.h1>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg font-light max-w-lg leading-relaxed text-[#6B6B6B]"
         >
           Ready to elevate your digital presence? Let's create something extraordinary together.
         </motion.p>
       </section>
 
-      {/* Main Content */}
       <section className="px-6 lg:px-10 pb-28 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
-          {/* Info */}
           <div ref={infoRef} className="lg:col-span-2 space-y-8">
             {CONTACT_INFO.map((item) => (
               <div key={item.title} className="contact-info-item flex gap-4" style={{ opacity: 0 }}>
@@ -124,32 +124,36 @@ export default function Contact() {
                 </div>
               </div>
             ))}
-
             <div className="contact-info-item" style={{ opacity: 0 }}>
-              
-                href="https://wa.me/923164079480"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 lux-card rounded-sm px-6 py-4 hover:border-[#25D366]/40 transition-all group"
-              >
-                <MessageCircle size={18} className="text-[#25D366]" />
-                <span className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#25D366] transition-colors">Chat on WhatsApp</span>
-              </a>
-            </div>
-          </div>
 
-          {/* Form */}
-          <motion.div ref={formRef}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35 }}
-            className="lg:col-span-3"
-          >
-            <form onSubmit={handleSubmit} className="lux-card rounded-sm p-8 lg:p-10 space-y-6 bg-white">
+              href="https://wa.me/923164079480"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 lux-card rounded-sm px-6 py-4 hover:border-[#25D366]/40 transition-all group"
+              >
+              <MessageCircle size={18} className="text-[#25D366]" />
+              <span className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#25D366] transition-colors">
+                Chat on WhatsApp
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35 }}
+          className="lg:col-span-3"
+        >
+          <div className="lux-card rounded-sm p-8 lg:p-10 space-y-6 bg-white">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Your Name</label>
-                  <input type="text" required value={form.name}
+                  <input
+                    type="text"
+                    required
+                    value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#B0B0A8] focus:border-[#B8972E] focus:outline-none transition-colors"
                     placeholder="John Doe"
@@ -157,7 +161,10 @@ export default function Contact() {
                 </div>
                 <div>
                   <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Your Email</label>
-                  <input type="email" required value={form.email}
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#B0B0A8] focus:border-[#B8972E] focus:outline-none transition-colors"
                     placeholder="john@example.com"
@@ -166,28 +173,33 @@ export default function Contact() {
               </div>
               <div>
                 <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Select Service</label>
-                <select value={form.service}
+                <select
+                  value={form.service}
                   onChange={(e) => setForm({ ...form, service: e.target.value })}
                   className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] focus:border-[#B8972E] focus:outline-none transition-colors appearance-none cursor-pointer"
                 >
                   <option value="">Select a service</option>
-                  {SERVICE_OPTIONS.map((s) => (<option key={s} value={s}>{s}</option>))}
+                  {SERVICE_OPTIONS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
                 </select>
               </div>
               <div>
                 <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Project Details</label>
-                <textarea rows={5} value={form.message}
+                <textarea
+                  rows={5}
+                  value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="w-full bg-[#FAFAF8] border border-[#E8E8E4] rounded-sm px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#B0B0A8] focus:border-[#B8972E] focus:outline-none transition-colors resize-none"
                   placeholder="Tell me about your project..."
                 />
               </div>
-
               {error && (
                 <p className="text-red-500 text-sm">Message send nahi hua, dobara try karo!</p>
               )}
-
-              <button type="submit" disabled={sending}
+              <button
+                type="submit"
+                disabled={sending}
                 className="btn-gold rounded-sm w-full flex items-center justify-center gap-2"
               >
                 {sending ? (
@@ -195,49 +207,52 @@ export default function Contact() {
                 ) : sent ? (
                   <span>Message Sent ✓</span>
                 ) : (
-                  <><Send size={15} /><span>Send Message</span></>
+                  <>
+                    <Send size={15} />
+                    <span>Send Message</span>
+                  </>
                 )}
               </button>
             </form>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Map Section */}
-      <section className="px-6 lg:px-10 pb-24 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="lux-card rounded-sm overflow-hidden"
-        >
-          <div className="bg-[#F5F5F0] h-72 lg:h-96 flex items-center justify-center relative">
-            <div
-              className="absolute inset-0 opacity-30"
-              style={{
-                backgroundImage: "linear-gradient(#D0D0C8 1px,transparent 1px),linear-gradient(90deg,#D0D0C8 1px,transparent 1px)",
-                backgroundSize: "40px 40px",
-              }}
-            />
-            <div className="relative z-10 text-center">
-              <div className="w-14 h-14 bg-[#B8972E] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <MapPin size={24} className="text-white" />
-              </div>
-              <h3 className="font-display text-2xl text-[#1A1A1A] mb-2">Bahria Town Lahore</h3>
-              <p className="text-[#6B6B6B] text-sm">112B Jasmine Block, Sector C</p>
-              
-                href="https://maps.google.com/?q=Bahria+Town+Lahore"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-5 text-[0.72rem] tracking-widest uppercase font-semibold text-[#B8972E] hover:text-[#1A1A1A] transition-colors border-b border-[#B8972E]/40 hover:border-[#1A1A1A]/40 pb-0.5"
-              >
-                Open in Maps <ArrowRight size={12} />
-              </a>
-            </div>
           </div>
         </motion.div>
-      </section>
     </div>
+      </section >
+
+    <section className="px-6 lg:px-10 pb-24 max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+        className="lux-card rounded-sm overflow-hidden"
+      >
+        <div className="bg-[#F5F5F0] h-72 lg:h-96 flex items-center justify-center relative">
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage: "linear-gradient(#D0D0C8 1px,transparent 1px),linear-gradient(90deg,#D0D0C8 1px,transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+          <div className="relative z-10 text-center">
+            <div className="w-14 h-14 bg-[#B8972E] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <MapPin size={24} className="text-white" />
+            </div>
+            <h3 className="font-display text-2xl text-[#1A1A1A] mb-2">Bahria Town Lahore</h3>
+            <p className="text-[#6B6B6B] text-sm">112B Jasmine Block, Sector C</p>
+
+            href="https://maps.google.com/?q=Bahria+Town+Lahore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-5 text-[0.72rem] tracking-widest uppercase font-semibold text-[#B8972E] hover:text-[#1A1A1A] transition-colors border-b border-[#B8972E]/40 hover:border-[#1A1A1A]/40 pb-0.5"
+              >
+            Open in Maps <ArrowRight size={12} />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+      </section >
+    </div >
   );
 }
