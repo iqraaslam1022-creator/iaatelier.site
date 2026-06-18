@@ -1,23 +1,56 @@
-import React, { useEffect, useRef, useState } from "react";
+ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { base44 } from "@/api/base44Client";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const STATIC_PROJECTS = [
+  {
+    id: 1,
+    title: "Luxury Watch Website Design",
+    description: "A modern luxury watch website concept focused on premium design, responsive layouts, smooth interactions, and high-end user experience.",
+    category: "Web Design",
+    featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f664fe3a7_rolex-herosection.png",
+    live_url: "https://accomplished-apex-time-vault.base44.app/",
+    original_price: 0,
+    discount_percentage: 0,
+    completion_date: "2024",
+  },
+  {
+    id: 2,
+    title: "Hafiz Builders | Premium Construction",
+    description: "Hafiz Builders delivers high-quality residential, commercial, and architectural construction services with modern design and expert engineering.",
+    category: "UI / UX",
+    featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f1eb8f6d7_real-estate.png",
+    live_url: "https://hafiz-build-elite.base44.app/",
+    original_price: 0,
+    discount_percentage: 0,
+    completion_date: "2024",
+  },
+  {
+    id: 3,
+    title: "Hafiz Cuisine – Restaurant Management",
+    description: "A modern restaurant management website featuring online reservations, food ordering, order tracking, inventory management, and a fully responsive experience.",
+    category: "Ecommerce",
+    featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/d2d3978cb_hafiz-cusine.png",
+    live_url: "https://hafiz-luxury-dine.base44.app/",
+    original_price: 0,
+    discount_percentage: 0,
+    completion_date: "2024",
+  },
+];
+
 export default function Portfolio() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const projects = STATIC_PROJECTS;
   const trackRef = useRef(null);
   const wrapperRef = useRef(null);
   const gridRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    base44.entities.PortfolioProject.list("order").then((data) => { setProjects(data); setLoading(false); });
   }, []);
 
   useEffect(() => {
@@ -58,117 +91,76 @@ export default function Portfolio() {
         </motion.p>
       </section>
 
-      {loading && <div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-[#B8972E]/20 border-t-[#B8972E] rounded-full animate-spin" /></div>}
-
-      {!loading && projects.length > 0 && (
-        <>
-          {/* Horizontal Scroll */}
-          <div ref={wrapperRef} className="h-screen overflow-hidden relative">
-            <div ref={trackRef} className="flex items-center h-full will-change-transform" style={{ width: "max-content", paddingLeft: "5vw", paddingRight: "5vw", gap: "2.5rem" }}>
-              <div className="flex-shrink-0 w-[30vw] min-w-[280px]">
-                <h2 className="font-display text-[clamp(2rem,3.5vw,3.2rem)] leading-tight text-[#1A1A1A] mb-4">
-                  Crafted for <em className="gold-gradient not-italic">ambitious</em> brands
-                </h2>
-                <p className="text-[#6B6B6B] text-base leading-relaxed mb-6">Scroll to explore our work →</p>
-                <div className="flex items-center gap-2 text-[0.68rem] tracking-widest uppercase text-[#B8972E] font-semibold">
-                  <div className="gold-line" /><span>{projects.length} Projects</span>
-                </div>
-              </div>
-              {projects.map((proj, i) => {
-                const discountedPrice = proj.discount_percentage > 0
-                  ? Math.round(proj.original_price * (1 - proj.discount_percentage / 100)) : null;
-                return (
-                  <div key={proj.id} className="flex-shrink-0 w-[60vw] max-w-[700px] lux-card rounded-sm overflow-hidden group">
-                    <div className="relative overflow-hidden" style={{ height: "60vh", minHeight: "340px" }}>
-                      <img src={proj.featured_image} alt={proj.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" loading="lazy" />
-                      <span className="absolute top-5 left-5 text-[0.62rem] tracking-[0.22em] uppercase font-semibold text-[#B8972E] bg-white/92 px-3 py-1.5 rounded-sm">{proj.category}</span>
-                      <span className="absolute top-4 right-4 font-display text-6xl font-bold text-white/[0.06] select-none">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      {proj.discount_percentage > 0 && (
-                        <span className="absolute bottom-5 right-5 bg-[#B8972E] text-white text-xs font-bold px-3 py-1.5 rounded-sm">
-                          -{proj.discount_percentage}% OFF
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-7 bg-white">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1">
-                          <h3 className="font-display text-xl text-[#1A1A1A] mb-2 group-hover:text-[#B8972E] transition-colors">{proj.title}</h3>
-                          <p className="text-sm text-[#6B6B6B] leading-relaxed mb-3">{proj.description}</p>
-                          {proj.original_price > 0 && (
-                            <div className="flex items-center gap-3 mb-4">
-                              {discountedPrice ? (
-                                <>
-                                  <span className="text-sm line-through text-[#6B6B6B]">${proj.original_price.toLocaleString()}</span>
-                                  <span className="font-display text-xl text-[#B8972E] font-bold">${discountedPrice.toLocaleString()}</span>
-                                </>
-                              ) : (
-                                <span className="font-display text-xl text-[#1A1A1A] font-bold">${proj.original_price.toLocaleString()}</span>
-                              )}
-                            </div>
-                          )}
-                          {proj.live_url && (
-                            <a href={proj.live_url} target="_blank" rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 text-[0.72rem] tracking-widest uppercase font-semibold text-[#1A1A1A] hover:text-[#B8972E] transition-colors border-b border-[#1A1A1A]/20 pb-0.5"
-                            ><span>Visit Site</span><ExternalLink size={12} /></a>
-                          )}
-                        </div>
-                        {proj.completion_date && <div className="text-[0.65rem] tracking-widest uppercase text-[#B8972E] font-semibold flex-shrink-0 pt-1">{proj.completion_date}</div>}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              <div className="flex-shrink-0 w-[28vw] min-w-[240px] flex flex-col items-start justify-center">
-                <p className="text-[#6B6B6B] text-sm mb-6 leading-relaxed">Have a project in mind? Let's create something extraordinary together.</p>
-                <Link to="/contact" className="btn-gold rounded-sm inline-flex items-center gap-2"><span>Start a Project</span><ArrowRight size={15} /></Link>
-              </div>
+      {/* Horizontal Scroll */}
+      <div ref={wrapperRef} className="h-screen overflow-hidden relative">
+        <div ref={trackRef} className="flex items-center h-full will-change-transform" style={{ width: "max-content", paddingLeft: "5vw", paddingRight: "5vw", gap: "2.5rem" }}>
+          <div className="flex-shrink-0 w-[30vw] min-w-[280px]">
+            <h2 className="font-display text-[clamp(2rem,3.5vw,3.2rem)] leading-tight text-[#1A1A1A] mb-4">
+              Crafted for <em className="gold-gradient not-italic">ambitious</em> brands
+            </h2>
+            <p className="text-[#6B6B6B] text-base leading-relaxed mb-6">Scroll to explore our work →</p>
+            <div className="flex items-center gap-2 text-[0.68rem] tracking-widest uppercase text-[#B8972E] font-semibold">
+              <div className="gold-line" /><span>{projects.length} Projects</span>
             </div>
           </div>
-
-          {/* Grid */}
-          <section ref={gridRef} className="py-28 lg:py-36 px-6 lg:px-10" style={{ backgroundColor: "#F5F5F0" }}>
-            <div className="max-w-7xl mx-auto">
-              <div className="flex items-center gap-3 mb-14"><div className="gold-line" /><span className="section-label">All Projects</span></div>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {projects.map((proj) => {
-                  const dp = proj.discount_percentage > 0 ? Math.round(proj.original_price * (1 - proj.discount_percentage / 100)) : null;
-                  return (
-                    <div key={proj.id} className="grid-proj lux-card rounded-sm overflow-hidden group" style={{ opacity: 0 }}>
-                      <div className="relative h-52 overflow-hidden">
-                        <img src={proj.featured_image} alt={proj.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" loading="lazy" />
-                        <span className="absolute top-4 left-4 text-[0.62rem] tracking-[0.22em] uppercase font-semibold text-[#B8972E] bg-white/90 px-3 py-1.5 rounded-sm">{proj.category}</span>
-                        {proj.discount_percentage > 0 && (
-                          <span className="absolute top-4 right-4 bg-[#B8972E] text-white text-[0.6rem] font-bold px-2 py-1 rounded-sm">-{proj.discount_percentage}%</span>
-                        )}
-                      </div>
-                      <div className="p-6 bg-white">
-                        <h3 className="font-display text-lg text-[#1A1A1A] mb-2 group-hover:text-[#B8972E] transition-colors">{proj.title}</h3>
-                        {proj.original_price > 0 && (
-                          <div className="flex items-center gap-3 mb-3">
-                            {dp ? (
-                              <><span className="text-sm line-through text-[#6B6B6B]">${proj.original_price.toLocaleString()}</span><span className="font-display text-lg text-[#B8972E] font-bold">${dp.toLocaleString()}</span></>
-                            ) : (
-                              <span className="font-display text-lg text-[#1A1A1A] font-bold">${proj.original_price.toLocaleString()}</span>
-                            )}
-                          </div>
-                        )}
-                        {proj.live_url && (
-                          <a href={proj.live_url} target="_blank" rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-[0.72rem] tracking-widest uppercase font-semibold text-[#1A1A1A] hover:text-[#B8972E] transition-colors"
-                          ><span>Visit Site</span><ExternalLink size={11} /></a>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+          {projects.map((proj, i) => (
+            <div key={proj.id} className="flex-shrink-0 w-[60vw] max-w-[700px] lux-card rounded-sm overflow-hidden group">
+              <div className="relative overflow-hidden" style={{ height: "60vh", minHeight: "340px" }}>
+                <img src={proj.featured_image} alt={proj.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" loading="lazy" />
+                <span className="absolute top-5 left-5 text-[0.62rem] tracking-[0.22em] uppercase font-semibold text-[#B8972E] bg-white/92 px-3 py-1.5 rounded-sm">{proj.category}</span>
+                <span className="absolute top-4 right-4 font-display text-6xl font-bold text-white/[0.06] select-none">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <div className="p-7 bg-white">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="font-display text-xl text-[#1A1A1A] mb-2 group-hover:text-[#B8972E] transition-colors">{proj.title}</h3>
+                    <p className="text-sm text-[#6B6B6B] leading-relaxed mb-3">{proj.description}</p>
+                    {proj.live_url && (
+                      <a href={proj.live_url} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-[0.72rem] tracking-widest uppercase font-semibold text-[#1A1A1A] hover:text-[#B8972E] transition-colors border-b border-[#1A1A1A]/20 pb-0.5"
+                      ><span>Visit Site</span><ExternalLink size={12} /></a>
+                    )}
+                  </div>
+                  {proj.completion_date && <div className="text-[0.65rem] tracking-widest uppercase text-[#B8972E] font-semibold flex-shrink-0 pt-1">{proj.completion_date}</div>}
+                </div>
               </div>
             </div>
-          </section>
-        </>
-      )}
+          ))}
+          <div className="flex-shrink-0 w-[28vw] min-w-[240px] flex flex-col items-start justify-center">
+            <p className="text-[#6B6B6B] text-sm mb-6 leading-relaxed">Have a project in mind? Let's create something extraordinary together.</p>
+            <Link to="/contact" className="btn-gold rounded-sm inline-flex items-center gap-2"><span>Start a Project</span><ArrowRight size={15} /></Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <section ref={gridRef} className="py-28 lg:py-36 px-6 lg:px-10" style={{ backgroundColor: "#F5F5F0" }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-14"><div className="gold-line" /><span className="section-label">All Projects</span></div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {projects.map((proj) => (
+              <div key={proj.id} className="grid-proj lux-card rounded-sm overflow-hidden group" style={{ opacity: 0 }}>
+                <div className="relative h-52 overflow-hidden">
+                  <img src={proj.featured_image} alt={proj.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" loading="lazy" />
+                  <span className="absolute top-4 left-4 text-[0.62rem] tracking-[0.22em] uppercase font-semibold text-[#B8972E] bg-white/90 px-3 py-1.5 rounded-sm">{proj.category}</span>
+                </div>
+                <div className="p-6 bg-white">
+                  <h3 className="font-display text-lg text-[#1A1A1A] mb-2 group-hover:text-[#B8972E] transition-colors">{proj.title}</h3>
+                  {proj.live_url && (
+                    <a href={proj.live_url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[0.72rem] tracking-widest uppercase font-semibold text-[#1A1A1A] hover:text-[#B8972E] transition-colors"
+                    ><span>Visit Site</span><ExternalLink size={11} /></a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
+
