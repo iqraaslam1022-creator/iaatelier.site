@@ -18,8 +18,15 @@ export default function Footer() {
   const ctaRef = useRef(null);
   const ctaInView = useInView(ctaRef, { once: true, margin: "-80px" });
   const [email, setEmail] = useState("");
+  const navigate = useNavigate(); // ✅ ADD THIS
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // ✅ Get Started — contact page par le jao (email bhi saath bhejo agar filled hai)
+  const handleGetStarted = (e) => {
+    e.preventDefault();
+    navigate("/contact", { state: { email } });
+  };
 
   return (
     <footer className="relative overflow-hidden">
@@ -52,9 +59,9 @@ export default function Footer() {
               Premium web experiences for brands that demand the extraordinary.
             </p>
 
-            {/* Quick email form */}
+            {/* ✅ FIXED: onSubmit now navigates to /contact */}
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleGetStarted}
               className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8"
             >
               <input
@@ -128,3 +135,4 @@ export default function Footer() {
     </footer>
   );
 }
+
