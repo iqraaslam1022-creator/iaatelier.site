@@ -1,9 +1,8 @@
- import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { base44 } from "@/api/base44Client";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,9 +45,6 @@ export default function About() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    base44.entities.Author.list()
-      .then(setAuthors)
-      .catch(() => setAuthors([]));
 
     const ctx = gsap.context(() => {
       gsap.fromTo(".hero-line",
@@ -156,40 +152,10 @@ export default function About() {
           </div>
         </div>
       </section>
-
-      {authors.length > 0 && (
-        <section ref={teamRef} className="py-28 px-6 lg:px-10" style={{ backgroundColor: "#FAFAF8" }}>
-          <div className="max-w-7xl mx-auto">
-            <BlurReveal>
-              <div className="flex items-center gap-3 mb-5"><div className="gold-line" /><span className="section-label">The Founders</span></div>
-              <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] leading-tight text-[#1A1A1A] mb-16">
-                The People Behind <em className="gold-gradient not-italic">the Work</em>
-              </h2>
-            </BlurReveal>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {authors.map((author) => (
-                <div key={author.id} className="team-card lux-card rounded-sm overflow-hidden group" style={{ opacity: 0 }}>
-                  <div className="flex flex-col sm:flex-row">
-                    {author.image_url && (
-                      <div className="sm:w-48 flex-shrink-0">
-                        <img src={author.image_url} alt={author.name} className="w-full h-56 sm:h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy" />
-                      </div>
-                    )}
-                    <div className="p-7 lg:p-8 flex flex-col justify-center">
-                      <h3 className="font-display text-xl text-[#1A1A1A] mb-1">{author.name}</h3>
-                      <p className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] mb-4 font-semibold">{author.role}</p>
-                      <p className="text-sm leading-relaxed text-[#6B6B6B]">{author.bio}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 }
+ 
         
   
       
