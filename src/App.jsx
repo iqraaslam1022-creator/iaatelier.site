@@ -1,7 +1,7 @@
  import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -44,7 +44,6 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
-      {/* Public routes */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
@@ -54,8 +53,6 @@ const AuthenticatedApp = () => {
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
-
-      {/* Admin routes */}
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/admin/hero" element={<AdminDashboard><AdminHero /></AdminDashboard>} />
       <Route path="/admin/services" element={<AdminDashboard><AdminServices /></AdminDashboard>} />
@@ -63,4 +60,25 @@ const AuthenticatedApp = () => {
       <Route path="/admin/pricing" element={<AdminDashboard><AdminPricing /></AdminDashboard>} />
       <Route path="/admin/testimonials" element={<AdminDashboard><AdminTestimonials /></AdminDashboard>} />
       <Route path="/admin/faq" element={<AdminDashboard><AdminFAQ /></AdminDashboard>} />
-      <Route path="/admin/blog" element={<AdminDashboard><AdminBlog
+      <Route path="/admin/blog" element={<AdminDashboard><AdminBlog /></AdminDashboard>} />
+      <Route path="/admin/authors" element={<AdminDashboard><AdminAuthors /></AdminDashboard>} />
+      <Route path="*" element={<PageNotFound />} />
+    </Routes>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <QueryClientProvider client={queryClientInstance}>
+        <Router>
+          <ScrollToTop />
+          <AuthenticatedApp />
+        </Router>
+        <Toaster />
+      </QueryClientProvider>
+    </AuthProvider>
+  );
+}
+
+export default App;
