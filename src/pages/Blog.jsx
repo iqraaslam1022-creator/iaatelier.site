@@ -9,27 +9,52 @@ import { useLang } from "@/lib/LanguageContext";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Blog() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const b = t.blog;
   const [activeCategory, setActiveCategory] = useState(b.categories[0]);
   const gridRef = useRef(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { setActiveCategory(b.categories[0]); }, [t]);
+
+  // Reset category when language changes
+  useEffect(() => {
+    setActiveCategory(b.categories[0]);
+  }, [lang]);
 
   const filtered = activeCategory === b.categories[0] ? b.posts : b.posts.filter((p) => p.category === activeCategory);
   const featuredPost = activeCategory === b.categories[0] ? filtered[0] : null;
   const gridPosts = featuredPost ? filtered.slice(1) : filtered;
 
+  // Main scroll-triggered animation - runs once per language change
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".blog-card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.65, ease: "power2.out", scrollTrigger: { trigger: gridRef.current, start: "top 80%" } });
-    });
-    return () => ctx.revert();
-  }, [b.posts]);
+    const timer = setTimeout(() => {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(".blog-card",
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1, y: 0, stagger: 0.1, duration: 0.65, ease: "power2.out",
+            scrollTrigger: { trigger: gridRef.current, start: "top 80%", invalidateOnRefresh: true }
+          }
+        );
+        ScrollTrigger.refresh();
+      });
+      return () => ctx.revert();
+    }, 100);
 
+    return () => {
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [lang]);
+
+  // Category change animation - simple fade, no ScrollTrigger
   useEffect(() => {
-    gsap.fromTo(".blog-card", { opacity: 0, y: 24, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.45, ease: "power2.out" });
+    const cards = document.querySelectorAll(".blog-card");
+    if (cards.length === 0) return;
+    gsap.fromTo(cards,
+      { opacity: 0, y: 24, scale: 0.97 },
+      { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.45, ease: "power2.out" }
+    );
   }, [activeCategory]);
 
   return (
@@ -88,7 +113,7 @@ export default function Blog() {
         {gridPosts.length === 0 && <p className="text-[#6B6B6B] text-center py-12">{b.noPosts}</p>}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {gridPosts.map((post) => (
-            <Link key={post.id} to={`/blog/${post.slug || post.id}`}>
+            <Link key={`${lang}-${post.id}`} to={`/blog/${post.slug || post.id}`}>
               <article className="blog-card lux-card rounded-sm overflow-hidden group cursor-pointer h-full" style={{ opacity: 0 }}>
                 <div className="relative h-52 overflow-hidden">
                   <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-[1.07]" loading="lazy" />
@@ -116,8 +141,8 @@ export default function Blog() {
       </section>
     </div>
   );
-}   
-    
+}
+
     
     
      
