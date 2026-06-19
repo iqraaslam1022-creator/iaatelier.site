@@ -1,4 +1,5 @@
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase';
+
 
 export const base44 = {
   auth: {
