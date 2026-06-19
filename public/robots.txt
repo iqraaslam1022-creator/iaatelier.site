@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iaatelier.site/sitemap.xml
