@@ -46,6 +46,7 @@
     --gold-light: #D4AF37;
     --gold-pale: rgba(184, 151, 46, 0.08);
   }
+
   .dark {
     --background: 0 0% 2%;
     --foreground: 0 0% 100%;
@@ -70,7 +71,10 @@
 }
 
 @layer base {
-  * { @apply border-border/30 outline-ring/50; }
+  * {
+    @apply border-border/30 outline-ring/50;
+  }
+
   body {
     @apply bg-background text-foreground font-body;
     background-color: var(--ivory);
@@ -105,20 +109,21 @@
 /* Luxury card */
 .lux-card {
   background: #FFFFFF;
-  border: 1px solid rgba(0,0,0,0.07);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.04);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 32px rgba(0, 0, 0, 0.04);
   transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
 }
+
 .lux-card:hover {
-  border-color: rgba(184,151,46,0.25);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 24px 64px rgba(184,151,46,0.08);
+  border-color: rgba(184, 151, 46, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 24px 64px rgba(184, 151, 46, 0.08);
 }
 
 /* Gold primary button */
 .btn-gold {
   background: var(--charcoal);
   color: #FFFFFF;
-  padding: 14px 36px;
+  padding: 16px 36px;
   font-weight: 600;
   font-size: 0.8rem;
   letter-spacing: 0.1em;
@@ -126,7 +131,14 @@
   transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
+  min-height: 48px;
+  min-width: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .btn-gold::after {
   content: '';
   position: absolute;
@@ -135,26 +147,45 @@
   opacity: 0;
   transition: opacity 0.35s ease;
 }
-.btn-gold:hover::after { opacity: 1; }
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
-.btn-gold span, .btn-gold svg { position: relative; z-index: 1; }
+
+.btn-gold:hover::after {
+  opacity: 1;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.btn-gold span,
+.btn-gold svg {
+  position: relative;
+  z-index: 1;
+}
 
 /* Outline button */
 .btn-outline-gold {
   background: transparent;
   color: var(--charcoal);
-  padding: 13px 36px;
+  padding: 15px 36px;
   font-weight: 500;
   font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border: 1.5px solid var(--charcoal);
   transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-height: 48px;
+  min-width: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .btn-outline-gold:hover {
   background: var(--charcoal);
   color: #FFFFFF;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
 
@@ -170,30 +201,71 @@
 
 /* Scroll indicator */
 @keyframes scrollDown {
-  0% { transform: translateY(-100%); opacity: 0; }
-  30% { opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: translateY(300%); opacity: 0; }
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
 }
-.scroll-indicator-dot { animation: scrollDown 2s ease-in-out infinite; }
+
+.scroll-indicator-dot {
+  animation: scrollDown 2s ease-in-out infinite;
+}
 
 /* Floating */
 @keyframes float {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  33% { transform: translateY(-14px) translateX(6px); }
-  66% { transform: translateY(-7px) translateX(-4px); }
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  33% {
+    transform: translateY(-14px) translateX(6px);
+  }
+
+  66% {
+    transform: translateY(-7px) translateX(-4px);
+  }
 }
-.float-anim { animation: float 7s ease-in-out infinite; }
+
+.float-anim {
+  animation: float 7s ease-in-out infinite;
+}
 
 /* Pulse */
 @keyframes pulseGold {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
-.pulse-gold { animation: pulseGold 3s ease-in-out infinite; }
+
+.pulse-gold {
+  animation: pulseGold 3s ease-in-out infinite;
+}
 
 /* Horizontal scroll container */
-.h-scroll-wrapper { overflow: hidden; }
+.h-scroll-wrapper {
+  overflow: hidden;
+}
 
 /* Stacked cards */
 .stack-card {
@@ -203,30 +275,87 @@
 }
 
 /* Smooth scrolling */
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 /* Focus */
-*:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  html { scroll-behavior: auto; }
+
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--ivory); }
-::-webkit-scrollbar-thumb { background: rgba(184,151,46,0.35); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(184,151,46,0.6); }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(184, 151, 46, 0.35);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 151, 46, 0.6);
+}
 
 /* Horizontal scroll track */
-.portfolio-track { display: flex; gap: 2rem; will-change: transform; }
+.portfolio-track {
+  display: flex;
+  gap: 2rem;
+  will-change: transform;
+}
 
 /* Text reveal */
-.reveal-clip { overflow: hidden; }
-.reveal-inner { display: block; }
+.reveal-clip {
+  overflow: hidden;
+}
+
+.reveal-inner {
+  display: block;
+}
+
+/* ── MOBILE FIXES ── */
+@media (max-width: 768px) {
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+  }
+
+  .btn-gold,
+  .btn-outline-gold {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 16px 24px;
+  }
+
+  .lux-card {
+    margin-inline: 0;
+  }
+
+  .gold-line {
+    width: 24px;
+  }
+}

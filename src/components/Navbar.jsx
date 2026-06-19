@@ -47,7 +47,7 @@ export default function Navbar() {
   const navBg = scrolled
     ? "bg-white/96 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)]"
     : isHome ? "bg-transparent"
-    : "bg-white/96 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)]";
+      : "bg-white/96 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)]";
 
   const logoColor = isTransparent ? "text-white" : "text-[#1A1A1A]";
   const linkColor = isTransparent ? "text-white/85 hover:text-white" : "text-[#2D2D2D] hover:text-[#B8972E]";
@@ -55,23 +55,38 @@ export default function Navbar() {
 
   return (
     <>
-      <nav ref={navRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`} style={{ opacity: 0 }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-20">
-            <Link to="/" className={`font-display text-xl tracking-widest transition-colors duration-300 ${logoColor}`}>
-              IA <span className={`font-bold ${isTransparent ? "text-[#D4AF37]" : ""} ${!isTransparent ? "gold-gradient" : ""}`}>Atelier</span>
+      <nav
+        ref={navRef}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}
+        style={{ opacity: 0 }}
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <div className="max-w-7xl mx-auto px-5 lg:px-10">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+
+            {/* Logo */}
+            <Link
+              to="/"
+              className={`font-display text-lg lg:text-xl tracking-widest transition-colors duration-300 ${logoColor}`}
+            >
+              IA <span className={`font-bold ${isTransparent ? "text-[#D4AF37]" : "gold-gradient"}`}>Atelier</span>
             </Link>
 
+            {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-1">
               {NAV_ITEMS.map((item) => {
                 const active = location.pathname === item.path;
                 return (
-                  <Link key={item.path} to={item.path}
+                  <Link
+                    key={item.path}
+                    to={item.path}
                     className={`relative px-4 py-2 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-colors duration-300 min-h-[44px] flex items-center ${active ? activeColor : linkColor}`}
                   >
                     {item.label}
                     {active && (
-                      <motion.div layoutId="navUnderline"
+                      <motion.div
+                        layoutId="navUnderline"
                         className={`absolute bottom-0 left-4 right-4 h-[1.5px] ${isTransparent ? "bg-white" : "bg-[#B8972E]"}`}
                         transition={{ type: "spring", stiffness: 380, damping: 34 }}
                       />
@@ -81,32 +96,36 @@ export default function Navbar() {
               })}
             </div>
 
+            {/* Desktop Right */}
             <div className="hidden lg:flex items-center gap-3">
-              {/* Language Toggle */}
               <button
                 onClick={toggleLang}
-                className={`text-[0.7rem] tracking-[0.18em] uppercase font-semibold px-3 py-1.5 rounded-sm border transition-all duration-300 ${
-                  isTransparent
+                aria-label="Toggle language"
+                className={`text-[0.7rem] tracking-[0.18em] uppercase font-semibold px-3 py-1.5 rounded-sm border transition-all duration-300 min-h-[44px] ${isTransparent
                     ? "border-white/30 text-white/70 hover:text-white hover:border-white/60"
                     : "border-[#B8972E]/40 text-[#B8972E] hover:bg-[#B8972E] hover:text-white"
-                }`}
+                  }`}
               >
                 {lang === "en" ? "عربي" : "EN"}
               </button>
-              <Link to="/contact"
-                className={`px-7 py-3 text-[0.72rem] tracking-[0.14em] uppercase font-semibold rounded-sm transition-all duration-300 ${
-                  isTransparent
+              <Link
+                to="/contact"
+                className={`px-7 py-3 text-[0.72rem] tracking-[0.14em] uppercase font-semibold rounded-sm transition-all duration-300 min-h-[44px] flex items-center ${isTransparent
                     ? "border border-white/50 text-white hover:bg-white hover:text-[#1A1A1A]"
                     : "bg-[#1A1A1A] text-white hover:bg-[#B8972E]"
-                }`}
+                  }`}
               >
                 {t.nav.startProject}
               </Link>
             </div>
 
-            <button onClick={() => setMobileOpen(!mobileOpen)}
-              className={`lg:hidden w-11 h-11 flex items-center justify-center ${isTransparent ? "text-white" : "text-[#1A1A1A]"}`}
-              aria-label="Toggle menu"
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`lg:hidden w-11 h-11 flex items-center justify-center rounded-sm transition-colors ${isTransparent ? "text-white" : "text-[#1A1A1A]"
+                }`}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -114,23 +133,41 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="fixed inset-0 z-40 bg-white flex flex-col pt-24 px-8"
+            className="fixed inset-0 z-40 bg-white flex flex-col overflow-y-auto"
+            style={{ paddingTop: "80px" }}
           >
-            <button onClick={() => setMobileOpen(false)} className="absolute top-6 right-6 w-11 h-11 flex items-center justify-center text-[#1A1A1A]">
+            {/* Close Button */}
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="absolute top-4 right-5 w-11 h-11 flex items-center justify-center text-[#1A1A1A]"
+              aria-label="Close menu"
+            >
               <X size={24} />
             </button>
-            <nav className="flex flex-col gap-1">
+
+            {/* Nav Links */}
+            <nav className="flex flex-col gap-0 px-6" aria-label="Mobile navigation">
               {NAV_ITEMS.map((item, i) => {
                 const active = location.pathname === item.path;
                 return (
-                  <motion.div key={item.path} initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05, duration: 0.32 }}>
-                    <Link to={item.path}
-                      className={`flex items-center justify-between py-4 border-b border-[#1A1A1A]/08 font-display text-2xl tracking-wide transition-colors ${active ? "text-[#B8972E]" : "text-[#1A1A1A] hover:text-[#B8972E]"}`}
+                  <motion.div
+                    key={item.path}
+                    initial={{ opacity: 0, x: -24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.32 }}
+                  >
+                    <Link
+                      to={item.path}
+                      className={`flex items-center justify-between py-4 border-b border-[#1A1A1A]/10 font-display text-2xl tracking-wide transition-colors min-h-[64px] ${active ? "text-[#B8972E]" : "text-[#1A1A1A] hover:text-[#B8972E]"
+                        }`}
                     >
                       <span>
                         <span className="text-xs text-[#B8972E] mr-3 font-body tracking-widest">0{i + 1}</span>
@@ -142,11 +179,25 @@ export default function Navbar() {
                 );
               })}
             </nav>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.38 }} className="mt-8">
-              <button onClick={toggleLang} className="w-full mb-3 py-3 border border-[#B8972E]/40 text-[#B8972E] text-sm tracking-widest uppercase font-semibold rounded-sm">
+
+            {/* Bottom Buttons */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.38 }}
+              className="px-6 mt-6 mb-8 flex flex-col gap-3"
+            >
+              <button
+                onClick={toggleLang}
+                aria-label="Toggle language"
+                className="w-full min-h-[52px] py-3 border border-[#B8972E]/40 text-[#B8972E] text-sm tracking-widest uppercase font-semibold rounded-sm"
+              >
                 {lang === "en" ? "العربية" : "English"}
               </button>
-              <Link to="/contact" className="btn-gold rounded-sm w-full block text-center py-4">
+              <Link
+                to="/contact"
+                className="btn-gold rounded-sm w-full min-h-[52px] flex items-center justify-center text-center"
+              >
                 <span>{t.nav.startProject}</span>
               </Link>
             </motion.div>
@@ -155,7 +206,4 @@ export default function Navbar() {
       </AnimatePresence>
     </>
   );
-} 
- 
-         
-       
+}
