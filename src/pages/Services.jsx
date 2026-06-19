@@ -12,26 +12,44 @@ const ICONS = [Monitor, Code, ShoppingCart, Search, Palette, LayoutDashboard, St
 const colors = ["#FFFFFF", "#F9F5E8", "#F5F5F0", "#F8F6F0", "#FAFAF8", "#F9F5E8", "#F5F5F0", "#F8F6F0", "#FAFAF8"];
 
 export default function Services() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const s = t.services;
   const cardsRef = useRef(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray(".stack-service-card");
-      cards.forEach((card, i) => {
-        if (i === 0) return;
-        gsap.fromTo(card,
-          { yPercent: 100, scale: 0.94, opacity: 0.6 },
-          { yPercent: 0, scale: 1, opacity: 1, ease: "power2.inOut",
-            scrollTrigger: { trigger: card, start: "top bottom", end: "top center", scrub: 1.2 } }
-        );
-      });
-    }, cardsRef);
-    return () => ctx.revert();
-  }, [s.items]);
+    // Wait for DOM to be ready before initializing GSAP
+    const timer = setTimeout(() => {
+      const ctx = gsap.context(() => {
+        const cards = gsap.utils.toArray(".stack-service-card");
+        cards.forEach((card, i) => {
+          if (i === 0) return;
+          gsap.fromTo(card,
+            { yPercent: 100, scale: 0.94, opacity: 0.6 },
+            {
+              yPercent: 0, scale: 1, opacity: 1, ease: "power2.inOut",
+              scrollTrigger: {
+                trigger: card,
+                start: "top bottom",
+                end: "top center",
+                scrub: 1.2,
+                invalidateOnRefresh: true,
+              }
+            }
+          );
+        });
+        ScrollTrigger.refresh();
+      }, cardsRef);
+
+      return () => ctx.revert();
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [lang]); // ✅ Re-init only when language changes, not on every render
 
   return (
     <div style={{ backgroundColor: "#FAFAF8" }}>
@@ -54,7 +72,7 @@ export default function Services() {
           {s.items.map((svc, i) => {
             const Icon = ICONS[i] || Monitor;
             return (
-              <div key={svc.num} className="stack-service-card lux-card rounded-sm p-10 lg:p-14 group"
+              <div key={`${lang}-${svc.num}`} className="stack-service-card lux-card rounded-sm p-10 lg:p-14 group"
                 style={{ backgroundColor: colors[i % colors.length] }}>
                 <div className="flex flex-col lg:flex-row lg:items-start gap-8">
                   <div className="flex-shrink-0 flex items-center gap-5">
@@ -101,6 +119,7 @@ export default function Services() {
   );
 }
 
+    
   
                
    
