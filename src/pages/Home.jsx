@@ -8,7 +8,7 @@ import { useLang } from "@/lib/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const heroVideo = "https://media.base44.com/videos/public/6a2b674054d9bbcb910aeb3f/c9aaf41db_06131.mp4";
+const heroVideo = "/videos/hero.mp4";
 
 const STATIC_PROJECTS = [
   { id: 1, title: "Luxury Watch Website Design", category: "Web Design", featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f664fe3a7_rolex-herosection.png", live_url: "https://accomplished-apex-time-vault.base44.app/" },

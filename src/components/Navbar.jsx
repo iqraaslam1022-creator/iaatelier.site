@@ -102,8 +102,8 @@ export default function Navbar() {
                 onClick={toggleLang}
                 aria-label="Toggle language"
                 className={`text-[0.7rem] tracking-[0.18em] uppercase font-semibold px-3 py-1.5 rounded-sm border transition-all duration-300 min-h-[44px] ${isTransparent
-                    ? "border-white/30 text-white/70 hover:text-white hover:border-white/60"
-                    : "border-[#B8972E]/40 text-[#B8972E] hover:bg-[#B8972E] hover:text-white"
+                  ? "border-white/30 text-white/70 hover:text-white hover:border-white/60"
+                  : "border-[#B8972E]/40 text-[#B8972E] hover:bg-[#B8972E] hover:text-white"
                   }`}
               >
                 {lang === "en" ? "عربي" : "EN"}
@@ -111,8 +111,8 @@ export default function Navbar() {
               <Link
                 to="/contact"
                 className={`px-7 py-3 text-[0.72rem] tracking-[0.14em] uppercase font-semibold rounded-sm transition-all duration-300 min-h-[44px] flex items-center ${isTransparent
-                    ? "border border-white/50 text-white hover:bg-white hover:text-[#1A1A1A]"
-                    : "bg-[#1A1A1A] text-white hover:bg-[#B8972E]"
+                  ? "border border-white/50 text-white hover:bg-white hover:text-[#1A1A1A]"
+                  : "bg-[#1A1A1A] text-white hover:bg-[#B8972E]"
                   }`}
               >
                 {t.nav.startProject}
