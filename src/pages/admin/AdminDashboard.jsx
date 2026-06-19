@@ -33,8 +33,9 @@ function Sidebar({ open, onClose }) {
             const active = location.pathname === item.path;
             return (
               <Link key={item.path} to={item.path} onClick={onClose}
-                className={`flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-medium transition-all ${active ? "bg-[#B8972E] text-white" : "text-white/55 hover:text-white hover:bg-white/05"
-                  }`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-medium transition-all ${
+                  active ? "bg-[#B8972E] text-white" : "text-white/55 hover:text-white hover:bg-white/05"
+                }`}
               >
                 <Icon size={16} />
                 <span>{item.label}</span>
@@ -236,5 +237,11 @@ export default function AdminDashboard({ children }) {
     </div>
   );
 }
+     
+   
+ 
+          
+         
+ 
 
 
