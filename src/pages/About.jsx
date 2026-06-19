@@ -23,21 +23,45 @@ function BlurReveal({ children, delay = 0 }) {
 }
 
 export default function About() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const a = t.about;
   const timelineRef = useRef(null);
   const statsRef = useRef(null);
   const heroTextRef = useRef(null);
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".hero-line", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.14, duration: 1, ease: "power3.out", delay: 0.3 });
-      gsap.fromTo(".timeline-item", { opacity: 0, x: -40 }, { opacity: 1, x: 0, stagger: 0.18, duration: 0.7, ease: "power2.out", scrollTrigger: { trigger: timelineRef.current, start: "top 70%" } });
-      gsap.fromTo(".about-stat", { opacity: 0, scale: 0.85, y: 20 }, { opacity: 1, scale: 1, y: 0, stagger: 0.1, duration: 0.6, ease: "back.out(1.6)", scrollTrigger: { trigger: statsRef.current, start: "top 75%" } });
-    });
-    return () => ctx.revert();
-  }, []);
+    const timer = setTimeout(() => {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(".hero-line",
+          { yPercent: 110, opacity: 0 },
+          { yPercent: 0, opacity: 1, stagger: 0.14, duration: 1, ease: "power3.out", delay: 0.3 }
+        );
+        gsap.fromTo(".timeline-item",
+          { opacity: 0, x: lang === "ar" ? 40 : -40 },
+          {
+            opacity: 1, x: 0, stagger: 0.18, duration: 0.7, ease: "power2.out",
+            scrollTrigger: { trigger: timelineRef.current, start: "top 70%", invalidateOnRefresh: true }
+          }
+        );
+        gsap.fromTo(".about-stat",
+          { opacity: 0, scale: 0.85, y: 20 },
+          {
+            opacity: 1, scale: 1, y: 0, stagger: 0.1, duration: 0.6, ease: "back.out(1.6)",
+            scrollTrigger: { trigger: statsRef.current, start: "top 75%", invalidateOnRefresh: true }
+          }
+        );
+        ScrollTrigger.refresh();
+      });
+      return () => ctx.revert();
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [lang]);
 
   return (
     <div style={{ backgroundColor: "#FAFAF8" }}>
@@ -78,7 +102,7 @@ export default function About() {
       <section ref={statsRef} className="py-20 px-6 lg:px-10" style={{ backgroundColor: "#1A1A1A" }}>
         <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-10 text-center">
           {a.stats.map((s) => (
-            <div key={s.label} className="about-stat" style={{ opacity: 0 }}>
+            <div key={`${lang}-${s.label}`} className="about-stat" style={{ opacity: 0 }}>
               <div className="font-display text-5xl text-[#D4AF37] font-bold mb-2">{s.value}</div>
               <div className="text-[0.68rem] tracking-[0.22em] uppercase text-white/40 font-medium">{s.label}</div>
             </div>
@@ -95,11 +119,11 @@ export default function About() {
             </h2>
           </BlurReveal>
           <div className="relative">
-            <div className="absolute left-[3.5rem] top-0 bottom-0 w-[1px] bg-[#B8972E]/20" />
+            <div className={`absolute ${lang === "ar" ? "right-[3.5rem]" : "left-[3.5rem]"} top-0 bottom-0 w-[1px] bg-[#B8972E]/20`} />
             <div className="space-y-12">
               {a.timeline.map((item) => (
-                <div key={item.year} className="timeline-item flex gap-8 items-start" style={{ opacity: 0 }}>
-                  <div className="flex-shrink-0 w-28 text-right">
+                <div key={`${lang}-${item.year}`} className="timeline-item flex gap-8 items-start" style={{ opacity: 0 }}>
+                  <div className={`flex-shrink-0 w-28 ${lang === "ar" ? "text-left" : "text-right"}`}>
                     <span className="font-display text-lg text-[#B8972E] font-bold">{item.year}</span>
                   </div>
                   <div className="relative flex-shrink-0 mt-1.5">
@@ -117,7 +141,8 @@ export default function About() {
       </section>
     </div>
   );
-} 
+}
+
      
    
                   
