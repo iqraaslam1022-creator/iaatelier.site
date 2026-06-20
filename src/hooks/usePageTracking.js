@@ -45,6 +45,42 @@ function getPKTTime() {
     return pkt.toISOString().replace('Z', '+05:00');
 }
 
+async function getGeoInfo() {
+    try {
+        // Step 1: Cloudflare se country + IP lo (CORS allow karta hai)
+        const cfRes = await fetch('https://cloudflare.com/cdn-cgi/trace');
+        const text = await cfRes.text();
+        const cf = {};
+        text.trim().split('\n').forEach(line => {
+            const [k, v] = line.split('=');
+            cf[k] = v;
+        });
+
+        const ip = cf.ip || null;
+        const countryCode = cf.loc || null;
+        const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
+        const country = countryCode ? countryNames.of(countryCode) : 'Unknown';
+
+        // Step 2: Edge Function se city lo
+        let city = 'Unknown';
+        try {
+            const geoRes = await fetch('https://flkgnuywynftkwztbkwn.supabase.co/functions/v1/get-geo', {
+                headers: {
+                    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+                }
+            });
+            const geoData = await geoRes.json();
+            if (geoData.city && geoData.city !== 'Unknown') {
+                city = geoData.city;
+            }
+        } catch (_) { }
+
+        return { country, city, ip };
+    } catch (_) {
+        return { country: 'Unknown', city: 'Unknown', ip: null };
+    }
+}
+
 export function usePageTracking() {
     const location = useLocation();
 
@@ -53,20 +89,13 @@ export function usePageTracking() {
 
         async function trackVisit() {
             try {
-                // Apna Edge Function — server side se geo info lo
-                const geo = await fetch('https://flkgnuywynftkwztbkwn.supabase.co/functions/v1/get-geo', {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-                    }
-                })
-                    .then(r => r.json())
-                    .catch(() => ({ country: 'Unknown', city: 'Unknown', ip: null }));
+                const geo = await getGeoInfo();
 
                 await supabase.from('visitors').insert({
                     page: location.pathname,
-                    country: geo.country || 'Unknown',
-                    city: geo.city || 'Unknown',
-                    ip_address: geo.ip || null,
+                    country: geo.country,
+                    city: geo.city,
+                    ip_address: geo.ip,
                     device: getDevice(),
                     browser: getBrowser(),
                     os: getOS(),
