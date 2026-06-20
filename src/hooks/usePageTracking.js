@@ -39,25 +39,34 @@ function generateSessionId() {
     return sid;
 }
 
+function getPKTTime() {
+    const now = new Date();
+    const pkt = new Date(now.getTime() + (5 * 60 * 60 * 1000));
+    return pkt.toISOString().replace('Z', '+05:00');
+}
+
 export function usePageTracking() {
     const location = useLocation();
 
     useEffect(() => {
-        // Admin pages track mat karo
         if (location.pathname.startsWith('/admin')) return;
 
         async function trackVisit() {
             try {
-                // IP aur geo info lo (country, city)
-                const geo = await fetch('https://ipapi.co/json/')
+                // ip-api.com — free, HTTPS, Vercel pe kaam karta hai
+                const geo = await fetch('https://ip-api.com/json/?fields=status,country,city,query')
                     .then(r => r.json())
                     .catch(() => ({}));
 
+                const country = geo.status === 'success' ? geo.country : 'Unknown';
+                const city = geo.status === 'success' ? geo.city : 'Unknown';
+                const ip = geo.status === 'success' ? geo.query : null;
+
                 await supabase.from('visitors').insert({
                     page: location.pathname,
-                    country: geo.country_name || 'Unknown',
-                    city: geo.city || 'Unknown',
-                    ip_address: geo.ip || null,
+                    country: country,
+                    city: city,
+                    ip_address: ip,
                     device: getDevice(),
                     browser: getBrowser(),
                     os: getOS(),
@@ -66,16 +75,13 @@ export function usePageTracking() {
                     screen_size: `${screen.width}x${screen.height}`,
                     user_agent: navigator.userAgent,
                     session_id: generateSessionId(),
-                    created_at: new Date().toLocaleString('sv-SE', {
-                        timeZone: 'Asia/Karachi'
-                    }).replace(' ', 'T') + '+05:00',
+                    created_at: getPKTTime(),
                 });
             } catch (err) {
-                // Tracking error site ko affect na kare
                 console.error('Tracking error:', err);
             }
         }
 
         trackVisit();
     }, [location.pathname]);
-} 
+}
