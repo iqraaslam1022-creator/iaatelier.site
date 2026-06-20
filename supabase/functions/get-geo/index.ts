@@ -11,34 +11,26 @@ serve(async (req) => {
   }
 
   try {
-    // Visitor ki real IP lo
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-               req.headers.get('x-real-ip') || 
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+               req.headers.get('x-real-ip') ||
                '0.0.0.0'
 
-    // ipapi.co se geo info lo (server side pe CORS issue nahi)
-    const geo = await fetch(`https://ipapi.co/${ip}/json/`)
+    // ip-api.com — server side pe CORS issue nahi, city bhi deta hai
+    const geo = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,city`)
       .then(r => r.json())
       .catch(() => ({}))
 
+    const country = geo.status === 'success' ? geo.country : 'Unknown'
+    const city = geo.status === 'success' ? geo.city : 'Unknown'
+
     return new Response(
-      JSON.stringify({
-        ip,
-        country: geo.country_name || 'Unknown',
-        city: geo.city || 'Unknown',
-      }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
+      JSON.stringify({ ip, country, city }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
   } catch (err) {
     return new Response(
       JSON.stringify({ ip: null, country: 'Unknown', city: 'Unknown' }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
   }
 })
