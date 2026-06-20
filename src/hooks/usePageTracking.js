@@ -46,34 +46,27 @@ function getPKTTime() {
 }
 
 async function getGeoInfo() {
-    // Try 1: ipwho.is
     try {
-        const res = await fetch('https://ipwho.is/');
-        const data = await res.json();
-        if (data.success) {
-            return { country: data.country, city: data.city, ip: data.ip };
-        }
-    } catch (_) { }
+        // Cloudflare ka trace endpoint — CORS allow karta hai, koi limit nahi
+        const res = await fetch('https://cloudflare.com/cdn-cgi/trace');
+        const text = await res.text();
+        const data = {};
+        text.trim().split('\n').forEach(line => {
+            const [key, val] = line.split('=');
+            data[key] = val;
+        });
+        // data.ip aur data.loc (country code) milta hai
+        const ip = data.ip || null;
+        const countryCode = data.loc || null;
 
-    // Try 2: freeipapi.com
-    try {
-        const res = await fetch('https://freeipapi.com/api/json');
-        const data = await res.json();
-        if (data.countryName) {
-            return { country: data.countryName, city: data.cityName, ip: data.ipAddress };
-        }
-    } catch (_) { }
+        // Country code se country name
+        const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
+        const country = countryCode ? countryNames.of(countryCode) : 'Unknown';
 
-    // Try 3: ipapi.co
-    try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data.country_name) {
-            return { country: data.country_name, city: data.city, ip: data.ip };
-        }
-    } catch (_) { }
-
-    return { country: 'Unknown', city: 'Unknown', ip: null };
+        return { country, city: 'Unknown', ip };
+    } catch (_) {
+        return { country: 'Unknown', city: 'Unknown', ip: null };
+    }
 }
 
 export function usePageTracking() {
