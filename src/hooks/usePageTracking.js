@@ -45,30 +45,6 @@ function getPKTTime() {
     return pkt.toISOString().replace('Z', '+05:00');
 }
 
-async function getGeoInfo() {
-    try {
-        // Cloudflare ka trace endpoint — CORS allow karta hai, koi limit nahi
-        const res = await fetch('https://cloudflare.com/cdn-cgi/trace');
-        const text = await res.text();
-        const data = {};
-        text.trim().split('\n').forEach(line => {
-            const [key, val] = line.split('=');
-            data[key] = val;
-        });
-        // data.ip aur data.loc (country code) milta hai
-        const ip = data.ip || null;
-        const countryCode = data.loc || null;
-
-        // Country code se country name
-        const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
-        const country = countryCode ? countryNames.of(countryCode) : 'Unknown';
-
-        return { country, city: 'Unknown', ip };
-    } catch (_) {
-        return { country: 'Unknown', city: 'Unknown', ip: null };
-    }
-}
-
 export function usePageTracking() {
     const location = useLocation();
 
@@ -77,13 +53,20 @@ export function usePageTracking() {
 
         async function trackVisit() {
             try {
-                const geo = await getGeoInfo();
+                // Apna Edge Function — server side se geo info lo
+                const geo = await fetch('https://flkgnuywynftkwztbkwn.supabase.co/functions/v1/get-geo', {
+                    headers: {
+                        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+                    }
+                })
+                    .then(r => r.json())
+                    .catch(() => ({ country: 'Unknown', city: 'Unknown', ip: null }));
 
                 await supabase.from('visitors').insert({
                     page: location.pathname,
-                    country: geo.country,
-                    city: geo.city,
-                    ip_address: geo.ip,
+                    country: geo.country || 'Unknown',
+                    city: geo.city || 'Unknown',
+                    ip_address: geo.ip || null,
                     device: getDevice(),
                     browser: getBrowser(),
                     os: getOS(),
