@@ -42,12 +42,19 @@ function generateSessionId() {
 function getPKTTime() {
     const now = new Date();
     const pkt = new Date(now.getTime() + (5 * 60 * 60 * 1000));
-    return pkt.toISOString().replace('Z', '+05:00');
+    // Format: "20 Jun 2026, 07:30 PM"
+    return pkt.toLocaleString('en-PK', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    });
 }
 
 async function getGeoInfo() {
     try {
-        // Step 1: Cloudflare se country + IP lo (CORS allow karta hai)
         const cfRes = await fetch('https://cloudflare.com/cdn-cgi/trace');
         const text = await cfRes.text();
         const cf = {};
@@ -61,7 +68,6 @@ async function getGeoInfo() {
         const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
         const country = countryCode ? countryNames.of(countryCode) : 'Unknown';
 
-        // Step 2: Edge Function se city lo
         let city = 'Unknown';
         try {
             const geoRes = await fetch('https://flkgnuywynftkwztbkwn.supabase.co/functions/v1/get-geo', {
@@ -104,7 +110,7 @@ export function usePageTracking() {
                     screen_size: `${screen.width}x${screen.height}`,
                     user_agent: navigator.userAgent,
                     session_id: generateSessionId(),
-                    created_at: getPKTTime(),
+                    created_at_pkt: getPKTTime(),
                 });
             } catch (err) {
                 console.error('Tracking error:', err);
