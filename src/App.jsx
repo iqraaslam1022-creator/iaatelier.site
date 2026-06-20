@@ -24,9 +24,10 @@ import AdminFAQ from './pages/admin/AdminFAQ';
 import AdminBlog from './pages/admin/AdminBlog';
 import AdminAuthors from './pages/admin/AdminAuthors';
 import { LanguageProvider } from './lib/LanguageContext';
+import { usePageTracking } from '@/hooks/usePageTracking';
 
 const AuthenticatedApp = () => {
-  import { usePageTracking } from '@/hooks/usePageTracking';
+  usePageTracking();
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
   const loadingSpinner = (
