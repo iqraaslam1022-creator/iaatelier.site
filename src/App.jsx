@@ -26,6 +26,7 @@ import AdminAuthors from './pages/admin/AdminAuthors';
 import { LanguageProvider } from './lib/LanguageContext';
 
 const AuthenticatedApp = () => {
+  import { usePageTracking } from '@/hooks/usePageTracking';
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
   const loadingSpinner = (
@@ -80,5 +81,5 @@ function App() {
     </LanguageProvider>
   );
 }
-export default App; 
-  
+export default App;
+
