@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight, Instagram } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import emailjs from '@emailjs/browser';
@@ -138,6 +138,8 @@ export default function Contact() {
                 </div>
               );
             })}
+
+            {/* WhatsApp */}
             <div className="contact-info-item" style={{ opacity: 0 }}>
               <a
                 href="https://wa.me/923164079480"
@@ -148,6 +150,21 @@ export default function Contact() {
                 <MessageCircle size={18} className="text-[#25D366]" />
                 <span className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#25D366] transition-colors">
                   {c.whatsapp}
+                </span>
+              </a>
+            </div>
+
+            {/* Instagram */}
+            <div className="contact-info-item" style={{ opacity: 0 }}>
+              <a
+                href="https://www.instagram.com/iqraaslam1865"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 lux-card rounded-sm px-6 py-4 hover:border-[#E1306C]/40 transition-all group"
+              >
+                <Instagram size={18} className="text-[#E1306C]" />
+                <span className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#E1306C] transition-colors">
+                  @iqraaslam1865
                 </span>
               </a>
             </div>
@@ -283,8 +300,8 @@ export default function Contact() {
   );
 }
 
-         
- 
-          
-          
-   
+
+
+
+
+

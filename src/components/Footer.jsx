@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowUp, Send } from "lucide-react";
+import { ArrowUp, Send, Instagram } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
 const NAV_LINKS = [
@@ -18,11 +18,10 @@ export default function Footer() {
   const ctaRef = useRef(null);
   const ctaInView = useInView(ctaRef, { once: true, margin: "-80px" });
   const [email, setEmail] = useState("");
-  const navigate = useNavigate(); // ✅ ADD THIS
+  const navigate = useNavigate();
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-  // ✅ Get Started — contact page par le jao (email bhi saath bhejo agar filled hai)
   const handleGetStarted = (e) => {
     e.preventDefault();
     navigate("/contact", { state: { email } });
@@ -30,7 +29,6 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden">
-      {/* ── Blur-to-Focus CTA over full-width image ── */}
       <div ref={ctaRef} className="relative h-[520px] lg:h-[600px] overflow-hidden">
         <img
           src={FOOTER_IMG}
@@ -41,7 +39,6 @@ export default function Footer() {
         <div className="absolute inset-0 bg-[#0D0D0D]/72" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D]/90 via-[#0D0D0D]/50 to-transparent" />
 
-        {/* Animated content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10">
           <motion.div
             initial={{ opacity: 0, y: 40, filter: "blur(14px)" }}
@@ -59,7 +56,6 @@ export default function Footer() {
               Premium web experiences for brands that demand the extraordinary.
             </p>
 
-            {/* ✅ FIXED: onSubmit now navigates to /contact */}
             <form
               onSubmit={handleGetStarted}
               className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8"
@@ -100,7 +96,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── Footer bar ── */}
+      {/* Footer bar */}
       <div style={{ backgroundColor: "#111111" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
@@ -118,6 +114,19 @@ export default function Footer() {
                 </Link>
               ))}
             </nav>
+
+            {/* Instagram link */}
+            <a
+              href="https://www.instagram.com/iqraaslam1865"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-white/35 hover:text-[#D4AF37] transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram size={18} />
+              <span className="text-[0.68rem] tracking-[0.2em] uppercase font-medium">Instagram</span>
+            </a>
+
             <button
               onClick={scrollToTop}
               className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:border-[#D4AF37]/50 hover:text-[#D4AF37] transition-all"
