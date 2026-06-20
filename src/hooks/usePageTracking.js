@@ -45,6 +45,37 @@ function getPKTTime() {
     return pkt.toISOString().replace('Z', '+05:00');
 }
 
+async function getGeoInfo() {
+    // Try 1: ipwho.is
+    try {
+        const res = await fetch('https://ipwho.is/');
+        const data = await res.json();
+        if (data.success) {
+            return { country: data.country, city: data.city, ip: data.ip };
+        }
+    } catch (_) { }
+
+    // Try 2: freeipapi.com
+    try {
+        const res = await fetch('https://freeipapi.com/api/json');
+        const data = await res.json();
+        if (data.countryName) {
+            return { country: data.countryName, city: data.cityName, ip: data.ipAddress };
+        }
+    } catch (_) { }
+
+    // Try 3: ipapi.co
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.country_name) {
+            return { country: data.country_name, city: data.city, ip: data.ip };
+        }
+    } catch (_) { }
+
+    return { country: 'Unknown', city: 'Unknown', ip: null };
+}
+
 export function usePageTracking() {
     const location = useLocation();
 
@@ -53,20 +84,13 @@ export function usePageTracking() {
 
         async function trackVisit() {
             try {
-                // ip-api.com — free, HTTPS, Vercel pe kaam karta hai
-                const geo = await fetch('https://ip-api.com/json/?fields=status,country,city,query')
-                    .then(r => r.json())
-                    .catch(() => ({}));
-
-                const country = geo.status === 'success' ? geo.country : 'Unknown';
-                const city = geo.status === 'success' ? geo.city : 'Unknown';
-                const ip = geo.status === 'success' ? geo.query : null;
+                const geo = await getGeoInfo();
 
                 await supabase.from('visitors').insert({
                     page: location.pathname,
-                    country: country,
-                    city: city,
-                    ip_address: ip,
+                    country: geo.country,
+                    city: geo.city,
+                    ip_address: geo.ip,
                     device: getDevice(),
                     browser: getBrowser(),
                     os: getOS(),
