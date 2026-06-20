@@ -40,10 +40,8 @@ function generateSessionId() {
 }
 
 function getPKTTime() {
-    const now = new Date();
-    const pkt = new Date(now.getTime() + (5 * 60 * 60 * 1000));
-    // Format: "20 Jun 2026, 07:30 PM"
-    return pkt.toLocaleString('en-PK', {
+    return new Date().toLocaleString('en-PK', {
+        timeZone: 'Asia/Karachi',
         day: '2-digit',
         month: 'short',
         year: 'numeric',
