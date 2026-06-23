@@ -142,7 +142,7 @@ export const translations = {
       whatsapp: "Chat on WhatsApp", mapsBtn: "Open in Maps",
       services: ["Web Design", "Web Development", "Ecommerce Development", "SEO Optimization", "UI/UX Design", "Landing Pages", "Shopify Development", "WordPress Development", "Website Maintenance"],
       info: [
-        { title: "Phone", lines: ["0316 4079480", "0312 4494148"] },
+        { title: "Phone", lines: ["+92 316 4079480", "+92 312 4494148"] },
         { title: "Email", lines: ["iqraaslamiqraaslam30@gmail.com"] },
         { title: "Address", lines: ["112B Jasmine Block, Sector C,", "Bahria Town Lahore"] },
         { title: "Response Time", lines: ["< 24 hours", "Average response within one business day"] },
@@ -288,7 +288,7 @@ export const translations = {
       whatsapp: "تواصل عبر واتساب", mapsBtn: "افتح في الخرائط",
       services: ["تصميم المواقع", "تطوير المواقع", "تطوير التجارة الإلكترونية", "تحسين محركات البحث", "تصميم UI/UX", "صفحات الهبوط", "تطوير Shopify", "تطوير WordPress", "صيانة المواقع"],
       info: [
-        { title: "الهاتف", lines: ["0316 4079480", "0312 4494148"] },
+        { title: "الهاتف", lines: ["+92 316 4079480", "+92 312 4494148"] },
         { title: "البريد الإلكتروني", lines: ["iqraaslamiqraaslam30@gmail.com"] },
         { title: "العنوان", lines: ["112B Jasmine Block, Sector C,", "Bahria Town Lahore"] },
         { title: "وقت الاستجابة", lines: ["أقل من 24 ساعة", "متوسط الرد خلال يوم عمل واحد"] },
@@ -312,5 +312,4 @@ export function LanguageProvider({ children }) {
 export function useLang() {
   return useContext(LanguageContext);
 }
- 
   
