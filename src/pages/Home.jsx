@@ -5,16 +5,11 @@ import { ArrowRight, ExternalLink, Star, ChevronDown, ChevronUp, Check } from "l
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLang } from "@/lib/LanguageContext";
+import { supabase } from "@/lib/supabase";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const heroVideo = "/videos/hero.mp4";
-
-const STATIC_PROJECTS = [
-  { id: 1, title: "Luxury Watch Website Design", category: "Web Design", featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f664fe3a7_rolex-herosection.png", live_url: "https://accomplished-apex-time-vault.base44.app/" },
-  { id: 2, title: "Hafiz Builders | Premium Construction", category: "UI / UX", featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/f1eb8f6d7_real-estate.png", live_url: "https://hafiz-build-elite.base44.app/" },
-  { id: 3, title: "Hafiz Cuisine – Restaurant Management", category: "Ecommerce", featured_image: "https://base44.app/api/apps/6a2b674054d9bbcb910aeb3f/files/mp/public/6a2b674054d9bbcb910aeb3f/d2d3978cb_hafiz-cusine.png", live_url: "https://hafiz-luxury-dine.base44.app/" },
-];
 
 function TestimonialsCarousel({ items, badge }) {
   const [idx, setIdx] = useState(0);
@@ -172,6 +167,23 @@ export default function Home() {
   const servicesRef = useRef(null);
   const statsRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [projects, setProjects] = useState([]);
+
+  // Supabase se projects fetch karo
+  useEffect(() => {
+    supabase
+      .from("portfolio")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(3)
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Supabase error:", error);
+          return;
+        }
+        if (data) setProjects(data);
+      });
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -198,7 +210,6 @@ export default function Home() {
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          {/* Low quality placeholder while video loads */}
           {!videoLoaded && (
             <div className="absolute inset-0 bg-[#0D0D0D]" />
           )}
@@ -332,7 +343,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            {STATIC_PROJECTS.map((proj, i) => (
+            {projects.map((proj, i) => (
               <motion.div
                 key={proj.id}
                 initial={{ opacity: 0, y: 40 }}
