@@ -355,7 +355,7 @@ export default function Home() {
                 <div className="relative h-52 overflow-hidden">
                   <img
                     src={proj.image_url}
-                    alt={proj.title}
+                    alt=""
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]"
                     loading="lazy"
                     decoding="async"
