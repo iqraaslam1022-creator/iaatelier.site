@@ -174,7 +174,7 @@ export default function Home() {
     supabase
       .from("portfolio")
       .select("*")
-      .order("created_at", { ascending: false })
+      .order("created_at", { ascending: true })
       .limit(3)
       .then(({ data, error }) => {
         if (error) {
@@ -354,7 +354,7 @@ export default function Home() {
               >
                 <div className="relative h-52 overflow-hidden">
                   <img
-                    src={proj.featured_image}
+                    src={proj.image_url}
                     alt={proj.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]"
                     loading="lazy"
@@ -409,11 +409,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
