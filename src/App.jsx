@@ -15,6 +15,7 @@ import Blog from './pages/Blog';
 import BlogPostPage from './pages/BlogPost';
 import Contact from './pages/Contact';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminLogin from './pages/admin/AdminLogin';
 import AdminHero from './pages/admin/AdminHero';
 import AdminServices from './pages/admin/AdminServices';
 import AdminPortfolio from './pages/admin/AdminPortfolio';
@@ -30,18 +31,24 @@ const AuthenticatedApp = () => {
   usePageTracking();
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
+
   const loadingSpinner = (
     <div className="fixed inset-0 flex items-center justify-center" style={{ backgroundColor: "#FAFAF8" }}>
       <div className="w-7 h-7 border-2 border-[#B8972E]/20 border-t-[#B8972E] rounded-full animate-spin"></div>
     </div>
   );
+
   if (isLoadingPublicSettings) return loadingSpinner;
+
   const isAdminRoute = location.pathname.startsWith('/admin');
-  if (isAdminRoute) {
+  const isLoginRoute = location.pathname === '/admin/login';
+
+  if (isAdminRoute && !isLoginRoute) {
     if (isLoadingAuth) return loadingSpinner;
     if (authError?.type === 'user_not_registered') return <UserNotRegisteredError />;
     if (authError?.type === 'auth_required') { navigateToLogin(); return null; }
   }
+
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -53,6 +60,7 @@ const AuthenticatedApp = () => {
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/admin/hero" element={<AdminDashboard><AdminHero /></AdminDashboard>} />
       <Route path="/admin/services" element={<AdminDashboard><AdminServices /></AdminDashboard>} />
@@ -82,5 +90,6 @@ function App() {
     </LanguageProvider>
   );
 }
+
 export default App;
 
