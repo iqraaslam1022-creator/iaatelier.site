@@ -22,30 +22,45 @@ export default function AdminPortfolio() {
     else setProjects(data || []);
   };
 
-  const openEdit = (p) => { setEditing(p.id); setForm({ ...EMPTY, ...p, technologies: p.technologies || [] }); setTechInput(""); };
+  const openEdit = (p) => {
+    let techs = p.technologies;
+    if (typeof techs === "string") {
+      try { techs = JSON.parse(techs); } catch { techs = techs.split(",").map(t => t.trim()).filter(Boolean); }
+    }
+    if (!Array.isArray(techs)) techs = [];
+    setEditing(p.id);
+    setForm({ ...EMPTY, ...p, technologies: techs });
+    setTechInput("");
+  };
+
   const openNew = () => { setEditing("new"); setForm(EMPTY); setTechInput(""); };
   const closeEdit = () => { setEditing(null); setForm(EMPTY); };
 
   const save = async () => {
+    if (!form.title.trim()) { alert("Title zaroor bharo!"); return; }
     setLoading(true);
+
     const payload = {
       title: form.title,
       description: form.description,
       image_url: form.image_url,
       live_url: form.live_url,
-      technologies: form.technologies,
+      technologies: Array.isArray(form.technologies) ? form.technologies : [],
     };
 
+    let error;
     if (editing === "new") {
-      const { error } = await supabase.from("portfolio").insert([payload]);
-      if (error) { alert("Error: " + error.message); setLoading(false); return; }
+      ({ error } = await supabase.from("portfolio").insert([payload]));
     } else {
-      const { error } = await supabase.from("portfolio").update(payload).eq("id", editing);
-      if (error) { alert("Error: " + error.message); setLoading(false); return; }
+      ({ error } = await supabase.from("portfolio").update(payload).eq("id", editing));
     }
 
-    await fetchProjects();
-    closeEdit();
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      await fetchProjects();
+      closeEdit();
+    }
     setLoading(false);
   };
 
@@ -121,8 +136,6 @@ export default function AdminPortfolio() {
                 ))}
               </div>
             </div>
-
-            {/* Image preview */}
             {form.image_url && (
               <div>
                 <label className="text-[0.68rem] tracking-[0.2em] uppercase text-[#B8972E] font-semibold mb-2 block">Preview</label>
@@ -131,11 +144,8 @@ export default function AdminPortfolio() {
             )}
           </div>
           <div className="flex gap-3">
-            <button
-              onClick={save}
-              disabled={loading}
-              className="bg-[#B8972E] text-white px-6 py-2.5 rounded-sm text-xs tracking-widest uppercase font-semibold flex items-center gap-2 disabled:opacity-60"
-            >
+            <button onClick={save} disabled={loading}
+              className="bg-[#B8972E] text-white px-6 py-2.5 rounded-sm text-xs tracking-widest uppercase font-semibold flex items-center gap-2 disabled:opacity-60">
               <Save size={13} />{loading ? "Saving..." : "Save"}
             </button>
             <button onClick={closeEdit} className="bg-[#F5F5F0] text-[#6B6B6B] px-6 py-2.5 rounded-sm text-xs tracking-widest uppercase font-semibold">Cancel</button>
@@ -155,13 +165,6 @@ export default function AdminPortfolio() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-sm text-[#1A1A1A] mb-1">{proj.title}</h3>
                     <p className="text-xs text-[#6B6B6B] line-clamp-2">{proj.description}</p>
-                    {proj.technologies && proj.technologies.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {proj.technologies.map((tech, i) => (
-                          <span key={i} className="text-[0.58rem] tracking-widest uppercase text-[#B8972E] bg-[#F5F5F0] px-2 py-0.5 rounded-sm">{tech}</span>
-                        ))}
-                      </div>
-                    )}
                   </div>
                   <div className="flex gap-1.5 ml-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                     <button onClick={() => openEdit(proj)} className="w-7 h-7 rounded-sm border border-[#E8E8E4] flex items-center justify-center text-[#6B6B6B] hover:text-[#B8972E]"><Pencil size={12} /></button>
