@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUp, Send, Instagram } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+
+import { ArrowUp, Send, Instagram, Linkedin } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Home", path: "/" },
@@ -125,6 +126,18 @@ export default function Footer() {
             >
               <Instagram size={18} />
               <span className="text-[0.68rem] tracking-[0.2em] uppercase font-medium">Instagram</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/iqra-aslam-744b033a2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-white/35 hover:text-[#D4AF37] transition-colors"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={18} />
+              <span className="text-[0.68rem] tracking-[0.2em] uppercase font-medium">
+                LinkedIn
+              </span>
             </a>
 
             <button
