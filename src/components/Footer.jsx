@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowUp, Send, Instagram } from "lucide-react";
+
 
 import { ArrowUp, Send, Instagram, Linkedin } from "lucide-react";
 
