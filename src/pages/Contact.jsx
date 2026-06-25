@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight, Instagram } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ArrowRight, Instagram, Linkedin } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import emailjs from '@emailjs/browser';
@@ -168,6 +168,21 @@ export default function Contact() {
                 </span>
               </a>
             </div>
+
+            {/* LinkedIn */}
+            <div className="contact-info-item" style={{ opacity: 0 }}>
+              <a
+                href="https://www.linkedin.com/in/iqra-aslam-744b033a2"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 lux-card rounded-sm px-6 py-4 hover:border-[#0A66C2]/40 transition-all group"
+              >
+                <Linkedin size={18} className="text-[#0A66C2]" />
+                <span className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#0A66C2] transition-colors">
+                  Iqra Aslam
+                </span>
+              </a>
+            </div>
           </div>
 
           <motion.div
@@ -299,7 +314,6 @@ export default function Contact() {
     </div>
   );
 }
-
 
 
 
