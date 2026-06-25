@@ -1,18 +1,41 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/lib/supabaseClient";
 
-const STATS = [
-  { value: "50+", label: "Projects" },
-  { value: "3+", label: "Years" },
-  { value: "98%", label: "Satisfaction" },
-  { value: "12+", label: "Industries" },
-];
-
-const heroVideo = "https://media.base44.com/videos/public/6a2b674054d9bbcb910aeb3f/c9aaf41db_06131.mp4";
-
-const LINES = ["Architecting", "Digital Legacies", "That Convert"];
+const DEFAULT_HERO = {
+  badge_text: "Award-Winning Digital Studio",
+  line1: "Architecting",
+  line2: "Digital Legacies",
+  line3: "That Convert",
+  subtitle: "Premium web experiences crafted with precision, passion and purpose — for brands that demand the extraordinary.",
+  video_url: "https://media.base44.com/videos/public/6a2b674054d9bbcb910aeb3f/c9aaf41db_06131.mp4",
+  stat1_value: "50+", stat1_label: "Projects",
+  stat2_value: "3+", stat2_label: "Years",
+  stat3_value: "98%", stat3_label: "Satisfaction",
+  stat4_value: "12+", stat4_label: "Industries",
+};
 
 export default function HeroSection() {
+  const [hero, setHero] = useState(DEFAULT_HERO);
+
+  useEffect(() => {
+    supabase
+      .from("hero")
+      .select("*")
+      .single()
+      .then(({ data, error }) => {
+        if (data && !error) setHero(data);
+      });
+  }, []);
+
+  const LINES = [hero.line1, hero.line2, hero.line3];
+  const STATS = [
+    { value: hero.stat1_value, label: hero.stat1_label },
+    { value: hero.stat2_value, label: hero.stat2_label },
+    { value: hero.stat3_value, label: hero.stat3_label },
+    { value: hero.stat4_value, label: hero.stat4_label },
+  ];
+
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -21,15 +44,11 @@ export default function HeroSection() {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
+          autoPlay loop muted playsInline preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
           style={{ zIndex: 0 }}
         >
-          <source src={heroVideo} type="video/mp4" />
+          <source src={hero.video_url} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-[#0D0D0D]/72" style={{ zIndex: 1 }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#000]/40 via-transparent to-[#0D0D0D]/60" style={{ zIndex: 1 }} />
@@ -53,7 +72,7 @@ export default function HeroSection() {
         >
           <span className="inline-flex items-center gap-2 border border-white/20 rounded-full px-5 py-2 text-[0.68rem] tracking-[0.22em] uppercase text-white/70 font-medium backdrop-blur-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] pulse-gold" />
-            Award-Winning Digital Studio
+            {hero.badge_text}
           </span>
         </motion.div>
 
@@ -64,11 +83,10 @@ export default function HeroSection() {
                 initial={{ y: "108%", opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.35 + i * 0.14, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className={`reveal-inner font-display leading-[0.95] tracking-tight ${
-                  i === 1
+                className={`reveal-inner font-display leading-[0.95] tracking-tight ${i === 1
                     ? "italic text-[#D4AF37] block text-[clamp(2.8rem,6.5vw,6.2rem)]"
                     : "text-white block text-[clamp(2.8rem,6.5vw,6.2rem)]"
-                }`}
+                  }`}
                 style={{ textShadow: i !== 1 ? "0 2px 40px rgba(0,0,0,0.5)" : "none" }}
               >
                 {line}
@@ -83,7 +101,7 @@ export default function HeroSection() {
           transition={{ duration: 0.9, delay: 0.9 }}
           className="text-[1.05rem] md:text-lg font-light leading-relaxed max-w-xl mb-12 text-white/75"
         >
-          Premium web experiences crafted with precision, passion and purpose — for brands that demand the extraordinary.
+          {hero.subtitle}
         </motion.p>
 
         <motion.div
@@ -132,12 +150,8 @@ export default function HeroSection() {
       </button>
     </section>
   );
-} 
- 
-       
+}
 
-        
 
-        
 
-    
+
