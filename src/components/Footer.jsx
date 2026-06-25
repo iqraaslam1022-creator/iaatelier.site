@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-
+import { motion, useInView } from "framer-motion";
 import { ArrowUp, Send, Instagram, Linkedin } from "lucide-react";
 
 const NAV_LINKS = [
