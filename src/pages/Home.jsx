@@ -168,9 +168,13 @@ export default function Home() {
   const statsRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [faqs, setFaqs] = useState([]);
+  const [pricingPackages, setPricingPackages] = useState([]);
 
-  // Supabase se projects fetch karo
+  // Supabase se data fetch karo
   useEffect(() => {
+    // Portfolio
     supabase
       .from("portfolio")
       .select("*")
@@ -182,6 +186,64 @@ export default function Home() {
           return;
         }
         if (data) setProjects(data);
+      });
+
+    // Testimonials
+    supabase
+      .from("testimonials")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Testimonials error:", error);
+          return;
+        }
+        if (data) {
+          const mapped = data.map((tItem) => ({
+            review_text: tItem.message,
+            rating: tItem.rating,
+            client_name: tItem.name,
+            company_name: tItem.role,
+          }));
+          setTestimonials(mapped);
+        }
+      });
+
+    // FAQs
+    supabase
+      .from("faqs")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("FAQs error:", error);
+          return;
+        }
+        if (data) setFaqs(data);
+      });
+
+    // Pricing
+    supabase
+      .from("pricing")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Pricing error:", error);
+          return;
+        }
+        if (data) {
+          const mapped = data.map((p) => ({
+            name: p.plan_name,
+            original_price: p.price,
+            discount_price: p.discount_price || null,
+            is_featured: p.is_popular,
+            features: p.features,
+            cta_text: "Get Started",
+            cta_link: "/contact",
+          }));
+          setPricingPackages(mapped);
+        }
       });
   }, []);
 
@@ -399,13 +461,13 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <TestimonialsCarousel items={h.testimonials.items} badge={h.testimonials.badge} />
+      <TestimonialsCarousel items={testimonials} badge={h.testimonials.badge} />
 
       {/* PRICING */}
-      <PricingSection data={h.pricing} />
+      <PricingSection data={{ ...h.pricing, packages: pricingPackages }} />
 
       {/* FAQ */}
-      <FAQSection items={h.faq.items} badge={h.faq.badge} title={h.faq.title} titleItalic={h.faq.titleItalic} />
+      <FAQSection items={faqs} badge={h.faq.badge} title={h.faq.title} titleItalic={h.faq.titleItalic} />
     </div>
   );
 }
