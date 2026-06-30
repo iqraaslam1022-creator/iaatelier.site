@@ -328,7 +328,7 @@ export default function Home() {
               className="btn-gold rounded-sm inline-flex items-center justify-center gap-2 min-h-[48px]"
             >
               <span>{h.hero.ctaPrimary}</span>
-            </Link>
+            </Link> 
             <Link
               to="/contact"
               className="border border-white/50 text-white hover:bg-white hover:text-[#1A1A1A] transition-all px-8 py-3.5 text-xs tracking-widest uppercase font-semibold rounded-sm min-h-[48px] flex items-center justify-center"

@@ -40,14 +40,13 @@ function getOS() {
     return "Other";
 }
 
-// Get country & city from IP
+// Get country & city from IP via Supabase Edge Function (avoids browser CORS issues)
 async function getLocation() {
     try {
-        const res = await fetch("https://ipapi.co/json/");
-        if (!res.ok) return { country: "Unknown", city: "Unknown", ip: null };
-        const data = await res.json();
+        const { data, error } = await supabase.functions.invoke("get-geo");
+        if (error || !data) return { country: "Unknown", city: "Unknown", ip: null };
         return {
-            country: data.country_name || "Unknown",
+            country: data.country || "Unknown",
             city: data.city || "Unknown",
             ip: data.ip || null,
         };
