@@ -3,10 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  "https://flkgnuywynftkwztbkwn.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsa2dudXl3eW5mdGt3enRia3duIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MjcxMDksImV4cCI6MjA5NzQwMzEwOX0.6tVRs39QgLDrlM2xKIGhzYz8X4s1WFQqJ7HpZx5eJy8"
-);
+import { supabase } from "../lib/supabase";
 
 function ProjectCard({ project, index }) {
   const ref = useRef(null);
