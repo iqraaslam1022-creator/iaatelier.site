@@ -87,7 +87,7 @@ export default function BlogPostPage() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
           <article className="prose prose-lg max-w-none">
-            {(post.content || "").replace(/\\n/g, "\n").split("\n").map((line, i) => {
+            {(post.content || "").replace(/\\n/g, "\n").replace(/^"|"$/g, "").trim().split("\n").map((line, i) => {
               if (line.startsWith("## ")) return <h2 key={i} className="font-display text-2xl text-[#1A1A1A] mt-10 mb-4">{line.replace("## ", "")}</h2>;
               if (line.startsWith("### ")) return <h3 key={i} className="font-display text-xl text-[#1A1A1A] mt-8 mb-3">{line.replace("### ", "")}</h3>;
               if (line.startsWith("- ")) {
