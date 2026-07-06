@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabaseClient";
 
 const DEFAULT_HERO = {
-  badge_text: "Award-Winning Digital Studio",
+badge_text: "Premium Digital Studio"
   line1: "Architecting",
   line2: "Digital Legacies",
   line3: "That Convert",
