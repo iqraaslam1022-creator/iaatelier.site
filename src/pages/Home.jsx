@@ -21,6 +21,254 @@ function TestimonialsCarousel({ items, badge }) {
   if (!items.length) return null;
   const item = items[idx];
   return (
+    <section className="py-20 lg:py-28" style={{ backgroundColor: "#1A1A1A" }}>
+      <div className="max-w-4xl mx-auto px-5 lg:px-10 text-center">
+        <div className="flex items-center gap-3 mb-8 justify-center">
+          <div className="gold-line mx-auto" style={{ background: "linear-gradient(90deg, transparent, #B8972E)" }} />
+          <span className="section-label text-[#B8972E]">{badge}</span>
+          <div className="gold-line" style={{ background: "linear-gradient(90deg, #B8972E, transparent)" }} />
+        </div>
+        <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className="flex justify-center mb-5">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={16} className={i < item.rating ? "text-[#D4AF37] fill-[#D4AF37]" : "text-white/20"} />
+            ))}
+          </div>
+          <p className="font-display text-lg lg:text-2xl text-white leading-relaxed mb-8 italic px-2">"{item.review_text}"</p>
+          <div className="flex items-center justify-center gap-4">
+            <div className="text-left">
+              <div className="font-semibold text-white text-sm">{item.client_name}</div>
+              {item.company_name && <div className="text-[0.68rem] tracking-widest uppercase text-[#B8972E]">{item.company_name}</div>}
+            </div>
+          </div>
+        </motion.div>
+        <div className="flex justify-center gap-2 mt-8">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIdx(i)}
+              aria-label={`Testimonial ${i + 1}`}
+              className={`h-3 rounded-full transition-all min-w-[12px] ${i === idx ? "bg-[#D4AF37] w-6" : "bg-white/20 w-3"}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQSection({ items, badge, title, titleItalic }) {
+  const [open, setOpen] = useState(null);
+  if (!items.length) return null;
+  return (
+    <section className="py-20 lg:py-28" style={{ backgroundColor: "#FAFAF8" }}>
+      <div className="max-w-3xl mx-auto px-5 lg:px-10">
+        <div className="flex items-center gap-3 mb-5"><div className="gold-line" /><span className="section-label">{badge}</span></div>
+        <h2 className="font-display text-[clamp(1.8rem,4vw,3.5rem)] leading-tight text-[#1A1A1A] mb-10">
+          {title} <em className="gold-gradient not-italic">{titleItalic}</em>
+        </h2>
+        <div className="space-y-3">
+          {items.map((faq, i) => (
+            <div key={i} className="lux-card rounded-sm overflow-hidden">
+              <button
+                className="w-full flex items-center justify-between p-5 text-left min-h-[56px]"
+                onClick={() => setOpen(open === i ? null : i)}
+                aria-expanded={open === i}
+              >
+                <span className="font-display text-base text-[#1A1A1A] pr-4">{faq.question}</span>
+                {open === i
+                  ? <ChevronUp size={18} className="text-[#B8972E] flex-shrink-0" />
+                  : <ChevronDown size={18} className="text-[#6B6B6B] flex-shrink-0" />}
+              </button>
+              {open === i && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="px-5 pb-5"
+                >
+                  <p className="text-sm text-[#6B6B6B] leading-relaxed">{faq.answer}</p>
+                </motion.div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PricingSection({ data }) {
+  return (
+    <section className="py-20 lg:py-28" style={{ backgroundColor: "#F5F5F0" }}>
+      <div className="max-w-7xl mx-auto px-5 lg:px-10">
+        <div className="flex items-center gap-3 mb-5"><div className="gold-line" /><span className="section-label">{data.badge}</span></div>
+        <h2 className="font-display text-[clamp(1.8rem,4vw,3.5rem)] leading-tight text-[#1A1A1A] mb-4">
+          {data.title} <em className="gold-gradient not-italic">{data.titleItalic}</em>
+        </h2>
+        <p className="text-[#6B6B6B] font-light mb-12 max-w-lg">{data.subtitle}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {data.packages.map((pkg, i) => {
+            const discount = pkg.discount_price && pkg.original_price
+              ? Math.round((1 - pkg.discount_price / pkg.original_price) * 100) : 0;
+            return (
+              <div
+                key={i}
+                className={`lux-card rounded-sm p-6 lg:p-8 flex flex-col relative ${pkg.is_featured ? "ring-2 ring-[#B8972E]" : ""}`}
+                style={{ backgroundColor: pkg.is_featured ? "#1A1A1A" : "#FFFFFF" }}
+              >
+                {pkg.is_featured && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#B8972E] text-white text-[0.6rem] tracking-widest uppercase font-bold px-4 py-1 rounded-full whitespace-nowrap">
+                    {data.popular}
+                  </div>
+                )}
+                {discount > 0 && (
+                  <div className="absolute top-4 right-4 bg-[#B8972E] text-white text-[0.6rem] tracking-wider uppercase font-bold px-2.5 py-1 rounded-sm">
+                    -{discount}%
+                  </div>
+                )}
+                <div className={`text-[0.68rem] tracking-[0.2em] uppercase font-semibold mb-4 ${pkg.is_featured ? "text-[#D4AF37]" : "text-[#B8972E]"}`}>{pkg.name}</div>
+                <div className="mb-1">
+                  {pkg.discount_price ? (
+                    <>
+                      <span className={`text-sm line-through ${pkg.is_featured ? "text-white/30" : "text-[#6B6B6B]"}`}>${pkg.original_price?.toLocaleString()}</span>
+                      <div className={`font-display text-3xl font-bold ${pkg.is_featured ? "text-white" : "text-[#1A1A1A]"}`}>${pkg.discount_price?.toLocaleString()}</div>
+                    </>
+                  ) : (
+                    <div className={`font-display text-3xl font-bold ${pkg.is_featured ? "text-white" : "text-[#1A1A1A]"}`}>${pkg.original_price?.toLocaleString()}</div>
+                  )}
+                </div>
+                <div className={`text-xs mb-6 ${pkg.is_featured ? "text-white/40" : "text-[#6B6B6B]"}`}>{data.oneTime}</div>
+                <ul className="space-y-3 flex-1 mb-8">
+                  {(pkg.features || []).map((f, j) => (
+                    <li key={j} className="flex items-start gap-2.5 text-sm">
+                      <Check size={14} className="text-[#B8972E] mt-0.5 flex-shrink-0" />
+                      <span className={pkg.is_featured ? "text-white/80" : "text-[#6B6B6B]"}>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to={pkg.cta_link || "/contact"}
+                  className={`text-center py-3.5 rounded-sm text-xs tracking-widest uppercase font-semibold transition-all min-h-[44px] flex items-center justify-center ${pkg.is_featured ? "bg-[#B8972E] text-white hover:bg-[#D4AF37]" : "bg-[#1A1A1A] text-white hover:bg-[#B8972E]"}`}
+                >
+                  {pkg.cta_text}
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function Home() {
+  const { t } = useLang();
+  const h = t.home;
+  const servicesRef = useRef(null);
+  const statsRef = useRef(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [faqs, setFaqs] = useState([]);
+  const [pricingPackages, setPricingPackages] = useState([]);
+
+  // Supabase se data fetch karo
+  useEffect(() => {
+    // Portfolio
+    supabase
+      .from("portfolio")
+      .select("*")
+      .order("created_at", { ascending: true })
+      .limit(3)
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Supabase error:", error);
+          return;
+        }
+        if (data) setProjects(data);
+      });
+
+    // Testimonials
+    supabase
+      .from("testimonials")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Testimonials error:", error);
+          return;
+        }
+        if (data) {
+          const mapped = data.map((tItem) => ({
+            review_text: tItem.message,
+            rating: tItem.rating,
+            client_name: tItem.name,
+            company_name: tItem.role,
+          }));
+          setTestimonials(mapped);
+        }
+      });
+
+    // FAQs
+    supabase
+      .from("faqs")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("FAQs error:", error);
+          return;
+        }
+        if (data) setFaqs(data);
+      });
+
+    // Pricing
+    supabase
+      .from("pricing")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Pricing error:", error);
+          return;
+        }
+        if (data) {
+          const mapped = data.map((p) => ({
+            name: p.plan_name,
+            original_price: p.price,
+            discount_price: p.discount_price || null,
+            is_featured: p.is_popular,
+            features: p.features,
+            cta_text: "Get Started",
+            cta_link: "/contact",
+          }));
+          setPricingPackages(mapped);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".service-item",
+        { opacity: 0, y: 50, scale: 0.96 },
+        {
+          opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.12, ease: "power3.out",
+          scrollTrigger: { trigger: servicesRef.current, start: "top 75%" }
+        }
+      );
+      gsap.fromTo(".stat-item",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out",
+          scrollTrigger: { trigger: statsRef.current, start: "top 80%" }
+        }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
+  return (
     <>
       <SEO
         title="IA Atelier | Premium Web Design & Branding Studio"
@@ -28,254 +276,6 @@ function TestimonialsCarousel({ items, badge }) {
         keywords="web design, branding, UI UX design, website development, IA Atelier"
         url="/"
       />
-      <section className="py-20 lg:py-28" style={{ backgroundColor: "#1A1A1A" }}>
-        <div className="max-w-4xl mx-auto px-5 lg:px-10 text-center">
-          <div className="flex items-center gap-3 mb-8 justify-center">
-            <div className="gold-line mx-auto" style={{ background: "linear-gradient(90deg, transparent, #B8972E)" }} />
-            <span className="section-label text-[#B8972E]">{badge}</span>
-            <div className="gold-line" style={{ background: "linear-gradient(90deg, #B8972E, transparent)" }} />
-          </div>
-          <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="flex justify-center mb-5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} className={i < item.rating ? "text-[#D4AF37] fill-[#D4AF37]" : "text-white/20"} />
-              ))}
-            </div>
-            <p className="font-display text-lg lg:text-2xl text-white leading-relaxed mb-8 italic px-2">"{item.review_text}"</p>
-            <div className="flex items-center justify-center gap-4">
-              <div className="text-left">
-                <div className="font-semibold text-white text-sm">{item.client_name}</div>
-                {item.company_name && <div className="text-[0.68rem] tracking-widest uppercase text-[#B8972E]">{item.company_name}</div>}
-              </div>
-            </div>
-          </motion.div>
-          <div className="flex justify-center gap-2 mt-8">
-            {items.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setIdx(i)}
-                aria-label={`Testimonial ${i + 1}`}
-                className={`h-3 rounded-full transition-all min-w-[12px] ${i === idx ? "bg-[#D4AF37] w-6" : "bg-white/20 w-3"}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-      );
-}
-
-      function FAQSection({items, badge, title, titleItalic}) {
-  const [open, setOpen] = useState(null);
-      if (!items.length) return null;
-      return (
-      <section className="py-20 lg:py-28" style={{ backgroundColor: "#FAFAF8" }}>
-        <div className="max-w-3xl mx-auto px-5 lg:px-10">
-          <div className="flex items-center gap-3 mb-5"><div className="gold-line" /><span className="section-label">{badge}</span></div>
-          <h2 className="font-display text-[clamp(1.8rem,4vw,3.5rem)] leading-tight text-[#1A1A1A] mb-10">
-            {title} <em className="gold-gradient not-italic">{titleItalic}</em>
-          </h2>
-          <div className="space-y-3">
-            {items.map((faq, i) => (
-              <div key={i} className="lux-card rounded-sm overflow-hidden">
-                <button
-                  className="w-full flex items-center justify-between p-5 text-left min-h-[56px]"
-                  onClick={() => setOpen(open === i ? null : i)}
-                  aria-expanded={open === i}
-                >
-                  <span className="font-display text-base text-[#1A1A1A] pr-4">{faq.question}</span>
-                  {open === i
-                    ? <ChevronUp size={18} className="text-[#B8972E] flex-shrink-0" />
-                    : <ChevronDown size={18} className="text-[#6B6B6B] flex-shrink-0" />}
-                </button>
-                {open === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="px-5 pb-5"
-                  >
-                    <p className="text-sm text-[#6B6B6B] leading-relaxed">{faq.answer}</p>
-                  </motion.div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      );
-}
-
-      function PricingSection({data}) {
-  return (
-      <section className="py-20 lg:py-28" style={{ backgroundColor: "#F5F5F0" }}>
-        <div className="max-w-7xl mx-auto px-5 lg:px-10">
-          <div className="flex items-center gap-3 mb-5"><div className="gold-line" /><span className="section-label">{data.badge}</span></div>
-          <h2 className="font-display text-[clamp(1.8rem,4vw,3.5rem)] leading-tight text-[#1A1A1A] mb-4">
-            {data.title} <em className="gold-gradient not-italic">{data.titleItalic}</em>
-          </h2>
-          <p className="text-[#6B6B6B] font-light mb-12 max-w-lg">{data.subtitle}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {data.packages.map((pkg, i) => {
-              const discount = pkg.discount_price && pkg.original_price
-                ? Math.round((1 - pkg.discount_price / pkg.original_price) * 100) : 0;
-              return (
-                <div
-                  key={i}
-                  className={`lux-card rounded-sm p-6 lg:p-8 flex flex-col relative ${pkg.is_featured ? "ring-2 ring-[#B8972E]" : ""}`}
-                  style={{ backgroundColor: pkg.is_featured ? "#1A1A1A" : "#FFFFFF" }}
-                >
-                  {pkg.is_featured && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#B8972E] text-white text-[0.6rem] tracking-widest uppercase font-bold px-4 py-1 rounded-full whitespace-nowrap">
-                      {data.popular}
-                    </div>
-                  )}
-                  {discount > 0 && (
-                    <div className="absolute top-4 right-4 bg-[#B8972E] text-white text-[0.6rem] tracking-wider uppercase font-bold px-2.5 py-1 rounded-sm">
-                      -{discount}%
-                    </div>
-                  )}
-                  <div className={`text-[0.68rem] tracking-[0.2em] uppercase font-semibold mb-4 ${pkg.is_featured ? "text-[#D4AF37]" : "text-[#B8972E]"}`}>{pkg.name}</div>
-                  <div className="mb-1">
-                    {pkg.discount_price ? (
-                      <>
-                        <span className={`text-sm line-through ${pkg.is_featured ? "text-white/30" : "text-[#6B6B6B]"}`}>${pkg.original_price?.toLocaleString()}</span>
-                        <div className={`font-display text-3xl font-bold ${pkg.is_featured ? "text-white" : "text-[#1A1A1A]"}`}>${pkg.discount_price?.toLocaleString()}</div>
-                      </>
-                    ) : (
-                      <div className={`font-display text-3xl font-bold ${pkg.is_featured ? "text-white" : "text-[#1A1A1A]"}`}>${pkg.original_price?.toLocaleString()}</div>
-                    )}
-                  </div>
-                  <div className={`text-xs mb-6 ${pkg.is_featured ? "text-white/40" : "text-[#6B6B6B]"}`}>{data.oneTime}</div>
-                  <ul className="space-y-3 flex-1 mb-8">
-                    {(pkg.features || []).map((f, j) => (
-                      <li key={j} className="flex items-start gap-2.5 text-sm">
-                        <Check size={14} className="text-[#B8972E] mt-0.5 flex-shrink-0" />
-                        <span className={pkg.is_featured ? "text-white/80" : "text-[#6B6B6B]"}>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to={pkg.cta_link || "/contact"}
-                    className={`text-center py-3.5 rounded-sm text-xs tracking-widest uppercase font-semibold transition-all min-h-[44px] flex items-center justify-center ${pkg.is_featured ? "bg-[#B8972E] text-white hover:bg-[#D4AF37]" : "bg-[#1A1A1A] text-white hover:bg-[#B8972E]"}`}
-                  >
-                    {pkg.cta_text}
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      );
-}
-
-      export default function Home() {
-  const {t} = useLang();
-      const h = t.home;
-      const servicesRef = useRef(null);
-      const statsRef = useRef(null);
-      const [videoLoaded, setVideoLoaded] = useState(false);
-      const [projects, setProjects] = useState([]);
-      const [testimonials, setTestimonials] = useState([]);
-      const [faqs, setFaqs] = useState([]);
-      const [pricingPackages, setPricingPackages] = useState([]);
-
-  // Supabase se data fetch karo
-  useEffect(() => {
-        // Portfolio
-        supabase
-          .from("portfolio")
-          .select("*")
-          .order("created_at", { ascending: true })
-          .limit(3)
-          .then(({ data, error }) => {
-            if (error) {
-              console.error("Supabase error:", error);
-              return;
-            }
-            if (data) setProjects(data);
-          });
-
-      // Testimonials
-      supabase
-      .from("testimonials")
-      .select("*")
-      .order("created_at", {ascending: false })
-      .then(({data, error}) => {
-        if (error) {
-        console.error("Testimonials error:", error);
-      return;
-        }
-      if (data) {
-          const mapped = data.map((tItem) => ({
-        review_text: tItem.message,
-      rating: tItem.rating,
-      client_name: tItem.name,
-      company_name: tItem.role,
-          }));
-      setTestimonials(mapped);
-        }
-      });
-
-      // FAQs
-      supabase
-      .from("faqs")
-      .select("*")
-      .order("display_order", {ascending: true })
-      .then(({data, error}) => {
-        if (error) {
-        console.error("FAQs error:", error);
-      return;
-        }
-      if (data) setFaqs(data);
-      });
-
-      // Pricing
-      supabase
-      .from("pricing")
-      .select("*")
-      .order("display_order", {ascending: true })
-      .then(({data, error}) => {
-        if (error) {
-        console.error("Pricing error:", error);
-      return;
-        }
-      if (data) {
-          const mapped = data.map((p) => ({
-        name: p.plan_name,
-      original_price: p.price,
-      discount_price: p.discount_price || null,
-      is_featured: p.is_popular,
-      features: p.features,
-      cta_text: "Get Started",
-      cta_link: "/contact",
-          }));
-      setPricingPackages(mapped);
-        }
-      });
-  }, []);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-        gsap.fromTo(".service-item",
-          { opacity: 0, y: 50, scale: 0.96 },
-          {
-            opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.12, ease: "power3.out",
-            scrollTrigger: { trigger: servicesRef.current, start: "top 75%" }
-          }
-        );
-      gsap.fromTo(".stat-item",
-      {opacity: 0, y: 30 },
-      {
-        opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out",
-      scrollTrigger: {trigger: statsRef.current, start: "top 80%" }
-        }
-      );
-    });
-    return () => ctx.revert();
-  }, []);
-
-      return (
       <div>
         {/* HERO */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -467,17 +467,25 @@ function TestimonialsCarousel({ items, badge }) {
             </div>
           </div>
         </section>
-      </>
-      );
+        {/* TESTIMONIALS */}
+        <TestimonialsCarousel
+          items={testimonials}
+          badge={h.testimonials.badge}
+        />
 
-      {/* TESTIMONIALS */}
-      <TestimonialsCarousel items={testimonials} badge={h.testimonials.badge} />
+        {/* PRICING */}
+        <PricingSection
+          data={{ ...h.pricing, packages: pricingPackages }}
+        />
 
-      {/* PRICING */}
-      <PricingSection data={{ ...h.pricing, packages: pricingPackages }} />
-
-      {/* FAQ */}
-      <FAQSection items={faqs} badge={h.faq.badge} title={h.faq.title} titleItalic={h.faq.titleItalic} />
-    </div >
+        {/* FAQ */}
+        <FAQSection
+          items={faqs}
+          badge={h.faq.badge}
+          title={h.faq.title}
+          titleItalic={h.faq.titleItalic}
+        />
+      </div>
+    </>
   );
 }
