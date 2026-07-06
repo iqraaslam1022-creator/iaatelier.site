@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLang } from "@/lib/LanguageContext";
+import SEO from "@/components/SEO";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,6 +65,14 @@ export default function About() {
   }, [lang]);
 
   return (
+  <>
+    <SEO
+      title="About IA Atelier | Creative Web Design & Branding Studio"
+      description="Learn about IA Atelier, our mission, creative approach, and how we help businesses grow through premium web design, branding, and digital experiences."
+      keywords="About IA Atelier, Web Design, Branding, Digital Studio"
+      url="/about"
+    />
+
     <div style={{ backgroundColor: "#FAFAF8" }}>
       <section className="pt-40 pb-24 px-6 lg:px-10 max-w-7xl mx-auto" ref={heroTextRef}>
         <div className="flex items-center gap-3 mb-6"><div className="gold-line" /><span className="section-label">{a.badge}</span></div>
