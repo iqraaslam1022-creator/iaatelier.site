@@ -82,6 +82,7 @@ export const translations = {
         { num: "07", title: "Shopify Development", description: "Premium Shopify stores that stand out and drive consistent revenue growth.", deliverables: ["Custom Theme", "App Integration", "Speed Optimization", "SEO"] },
         { num: "08", title: "WordPress Development", description: "Custom WordPress solutions combining flexibility with enterprise-grade performance.", deliverables: ["Custom Theme", "Plugin Development", "WooCommerce", "Security"] },
         { num: "09", title: "Website Maintenance", description: "Proactive care and optimization to keep your digital presence at peak performance.", deliverables: ["Updates", "Backups", "Security", "Performance Monitoring"] },
+        { num: "10", title: "SaaS Development", description: "Full-stack SaaS platforms with subscription plans, secure databases, and payment integration — built for real businesses to run on.", deliverables: ["Subscription Plans", "Database & Auth", "Payment Integration", "Admin Dashboard"] },
       ],
     },
     portfolio: {
@@ -228,6 +229,7 @@ export const translations = {
         { num: "07", title: "تطوير Shopify", description: "متاجر Shopify متميزة تبرز وتحقق نمواً متسقاً في الإيرادات.", deliverables: ["قالب مخصص", "تكامل التطبيقات", "تحسين السرعة", "SEO"] },
         { num: "08", title: "تطوير WordPress", description: "حلول WordPress مخصصة تجمع بين المرونة والأداء على مستوى المؤسسات.", deliverables: ["قالب مخصص", "تطوير الإضافات", "WooCommerce", "الأمان"] },
         { num: "09", title: "صيانة المواقع", description: "رعاية وتحسين استباقي للحفاظ على حضورك الرقمي في أفضل أداء.", deliverables: ["التحديثات", "النسخ الاحتياطية", "الأمان", "مراقبة الأداء"] },
+        { num: "10", title: "تطوير SaaS", description: "منصات SaaS متكاملة بخطط اشتراك وقواعد بيانات آمنة وتكامل الدفع — مبنية لتشغيل أعمال حقيقية.", deliverables: ["خطط الاشتراك", "قاعدة البيانات والمصادقة", "تكامل الدفع", "لوحة تحكم إدارية"] },
       ],
     },
     portfolio: {
