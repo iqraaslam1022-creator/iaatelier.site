@@ -1,0 +1,35 @@
+{
+  "name": "Service",
+  "type": "object",
+  "properties": {
+    "num": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "icon_name": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "title",
+    "description"
+  ]
+}

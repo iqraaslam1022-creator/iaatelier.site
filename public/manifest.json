@@ -1,0 +1,10 @@
+{
+    "name": "IA Atelier — Premium Digital Studio",
+    "short_name": "IA Atelier",
+    "description": "Premium digital studio crafting luxury web experiences, UI/UX design, and ecommerce solutions.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#050505",
+    "theme_color": "#050505",
+    "icons": []
+}

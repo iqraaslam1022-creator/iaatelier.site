@@ -1,0 +1,53 @@
+{
+  "name": "PortfolioProject",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "featured_image": {
+      "type": "string"
+    },
+    "gallery_images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "technologies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "completion_date": {
+      "type": "string"
+    },
+    "live_url": {
+      "type": "string"
+    },
+    "original_price": {
+      "type": "number"
+    },
+    "discount_percentage": {
+      "type": "number",
+      "default": 0
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
