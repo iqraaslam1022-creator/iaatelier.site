@@ -1,0 +1,45 @@
+{
+  "name": "PricingPackage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "original_price": {
+      "type": "number"
+    },
+    "discount_price": {
+      "type": "number"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cta_text": {
+      "type": "string",
+      "default": "Get Started"
+    },
+    "cta_link": {
+      "type": "string",
+      "default": "/contact"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "original_price"
+  ]
+}

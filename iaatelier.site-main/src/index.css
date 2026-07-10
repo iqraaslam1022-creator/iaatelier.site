@@ -1,0 +1,361 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 43 74% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 43 74% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 88%;
+    --input: 0 0% 92%;
+    --ring: 43 74% 42%;
+    --chart-1: 43 74% 42%;
+    --chart-2: 43 50% 55%;
+    --chart-3: 0 0% 50%;
+    --chart-4: 43 74% 60%;
+    --chart-5: 0 0% 30%;
+    --radius: 0.25rem;
+    --font-heading: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    /* luxury palette */
+    --ivory: #FAFAF8;
+    --pearl: #F5F5F0;
+    --silver: #E8E8E4;
+    --charcoal: #1A1A1A;
+    --graphite: #2D2D2D;
+    --slate: #6B6B6B;
+    --gold: #B8972E;
+    --gold-light: #D4AF37;
+    --gold-pale: rgba(184, 151, 46, 0.08);
+  }
+
+  .dark {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 43 74% 49%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 43 74% 49%;
+    --accent-foreground: 0 0% 2%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 43 74% 49%;
+    --input: 0 0% 15%;
+    --ring: 43 74% 49%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border/30 outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    background-color: var(--ivory);
+    color: var(--charcoal);
+  }
+}
+
+/* ── LUXURY UTILITY CLASSES ── */
+
+.gold-gradient {
+  background: linear-gradient(135deg, #B8972E, #D4AF37, #9A7A22);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.gold-line {
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* Luxury card */
+.lux-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 32px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+}
+
+.lux-card:hover {
+  border-color: rgba(184, 151, 46, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 24px 64px rgba(184, 151, 46, 0.08);
+}
+
+/* Gold primary button */
+.btn-gold {
+  background: var(--charcoal);
+  color: #FFFFFF;
+  padding: 16px 36px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  min-height: 48px;
+  min-width: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.btn-gold:hover::after {
+  opacity: 1;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.btn-gold span,
+.btn-gold svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Outline button */
+.btn-outline-gold {
+  background: transparent;
+  color: var(--charcoal);
+  padding: 15px 36px;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--charcoal);
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-height: 48px;
+  min-width: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-outline-gold:hover {
+  background: var(--charcoal);
+  color: #FFFFFF;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Noise texture overlay */
+.noise-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Scroll indicator */
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
+}
+
+.scroll-indicator-dot {
+  animation: scrollDown 2s ease-in-out infinite;
+}
+
+/* Floating */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  33% {
+    transform: translateY(-14px) translateX(6px);
+  }
+
+  66% {
+    transform: translateY(-7px) translateX(-4px);
+  }
+}
+
+.float-anim {
+  animation: float 7s ease-in-out infinite;
+}
+
+/* Pulse */
+@keyframes pulseGold {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.pulse-gold {
+  animation: pulseGold 3s ease-in-out infinite;
+}
+
+/* Horizontal scroll container */
+.h-scroll-wrapper {
+  overflow: hidden;
+}
+
+/* Stacked cards */
+.stack-card {
+  position: sticky;
+  top: 0;
+  transform-origin: top center;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(184, 151, 46, 0.35);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 151, 46, 0.6);
+}
+
+/* Horizontal scroll track */
+.portfolio-track {
+  display: flex;
+  gap: 2rem;
+  will-change: transform;
+}
+
+/* Text reveal */
+.reveal-clip {
+  overflow: hidden;
+}
+
+.reveal-inner {
+  display: block;
+}
+
+/* ── MOBILE FIXES ── */
+@media (max-width: 768px) {
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+  }
+
+  .btn-gold,
+  .btn-outline-gold {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 16px 24px;
+  }
+
+  .lux-card {
+    margin-inline: 0;
+  }
+
+  .gold-line {
+    width: 24px;
+  }
+}
